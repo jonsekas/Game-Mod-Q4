@@ -1027,6 +1027,9 @@ void rvWeapon::Think ( void ) {
 	// Update the zoom variable before updating the script
 	wsfl.zoom = owner->IsZoomed( );
 
+	// Right mouse button held, independent of whether the weapon supports camera zoom
+	wsfl.altAttack = ( owner->usercmd.buttons & BUTTON_ZOOM ) != 0;
+
 	// Only update the state loop on new frames
  	if ( gameLocal.isNewFrame ) {
 		stateThread.Execute( );

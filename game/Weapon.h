@@ -281,7 +281,8 @@ public:
 		bool		lowerWeapon			:1;
 		bool		flashlight			:1;
 		bool		zoom				:1;
-	} wsfl;		
+		bool		altAttack			:1;
+	} wsfl;
 	
 	// Generic flags
 	struct weaponFlags_s {
