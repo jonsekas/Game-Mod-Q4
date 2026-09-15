@@ -1,0 +1,8 @@
+sound player_grunt_birthday
+{
+	minDistance	585
+	maxDistance	2340
+	volumeDb	0
+
+	sound/weapons/rocketlauncher/gruntbirthday
+}
