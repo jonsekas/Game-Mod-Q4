@@ -73,6 +73,9 @@ const int	POWERUP_BLINK_TIME	= 1000;			// Time between powerup wear off sounds
 const float MIN_BOB_SPEED		= 5.0f;			// minimum speed to bob and play run/walk animations at
 const int	MAX_RESPAWN_TIME	= 10000;
 const int	RAGDOLL_DEATH_TIME	= 3000;
+const int	STAMINA_PULSE		= 100;			// Regen rate for Stamina System
+const int	STAMINA_DRAIN = 50;			// Regen rate for Stamina System
+const int	STAMINA_JUMP_COST = 50;			// Regen rate for Stamina System
 #ifdef _XENON
 	const int	RAGDOLL_DEATH_TIME_XEN_SP	= 1000;
 	const int	MAX_RESPAWN_TIME_XEN_SP	= 3000;
@@ -107,6 +110,7 @@ const idEventDef EV_Player_GetAmmoData( "getAmmoData", "s", 'v');
 const idEventDef EV_Player_RefillAmmo( "refillAmmo" );
 const idEventDef EV_Player_SetExtraProjPassEntity( "setExtraProjPassEntity", "E" );
 const idEventDef EV_Player_SetArmor( "setArmor", "f" );
+const idEventDef EV_Player_SetStamina("setStamina", "f");
 const idEventDef EV_Player_DamageEffect( "damageEffect", "sE" );
 const idEventDef EV_Player_AllowFallDamage( "allowFallDamage", "d" );
 
@@ -205,6 +209,8 @@ void idInventory::Clear( void ) {
 	powerups			= 0;
 	armor				= 0;
 	maxarmor			= 0;
+	stamina = 0;
+	maxstamina = 0;
 	secretAreasDiscovered = 0;
 
 	memset( ammo, 0, sizeof( ammo ) );
@@ -339,6 +345,8 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	maxHealth		= dict.GetInt( "maxhealth", "100" );
 	armor			= dict.GetInt( "armor", "50" );
 	maxarmor		= dict.GetInt( "maxarmor", "100" );
+	maxstamina = MAX_STAMINA;
+	stamina = maxstamina;
 
 	// ammo
 	for( i = 0; i < MAX_AMMOTYPES; i++ ) {
@@ -404,6 +412,8 @@ void idInventory::Save( idSaveGame *savefile ) const {
 	savefile->WriteInt( powerups );
 	savefile->WriteInt( armor );
 	savefile->WriteInt( maxarmor );
+	savefile->WriteInt( stamina );
+	savefile->WriteInt( maxstamina );
 
 	for( i = 0; i < MAX_AMMO; i++ ) {
 		savefile->WriteInt( ammo[ i ] );
@@ -484,6 +494,8 @@ void idInventory::Restore( idRestoreGame *savefile ) {
 	savefile->ReadInt( powerups );
 	savefile->ReadInt( armor );
 	savefile->ReadInt( maxarmor );
+	savefile->ReadInt( stamina );
+	savefile->ReadInt( maxstamina );
 
 	for( i = 0; i < MAX_AMMO; i++ ) {
 		savefile->ReadInt( ammo[ i ] );
@@ -1532,6 +1544,7 @@ void idPlayer::Init( void ) {
  	influenceSkin			= NULL;
 
 	currentLoggedAccel		= 0;
+	nextStaminaPulse = 0;
 
 	focusTime				= 0;
 	focusUI					= NULL;
@@ -2130,6 +2143,7 @@ void idPlayer::Save( idSaveGame *savefile ) const {
  	savefile->WriteBool( doingDeathSkin );
  	savefile->WriteInt( nextHealthPulse );
  	savefile->WriteInt( nextArmorPulse );
+	savefile->WriteInt( nextStaminaPulse );
  	savefile->WriteBool( hiddenWeapon );
 
 //	savefile->WriteInt( spectator );						// Don't save MP stuff
@@ -2403,6 +2417,7 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
  	savefile->ReadBool( doingDeathSkin );
  	savefile->ReadInt( nextHealthPulse );
  	savefile->ReadInt( nextArmorPulse );
+	savefile->ReadInt(nextStaminaPulse);
  	savefile->ReadBool( hiddenWeapon );
 
 	assert( !spectator );								// Don't save MP stuff
@@ -2808,6 +2823,8 @@ void idPlayer::SpawnToPoint( const idVec3 &spawn_origin, const idAngles &spawn_a
 			combatModel->Unlink( );
 		}
 	}
+
+	inventory.stamina = inventory.maxstamina;
 
 	// Any health over max health will tick down
 	if ( health > inventory.maxHealth ) {
@@ -3406,6 +3423,14 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 		_hud->SetStateInt ( "player_armor", inventory.armor );
 		_hud->SetStateFloat	( "player_armorpct", idMath::ClampFloat ( 0.0f, 1.0f, (float)inventory.armor / (float)inventory.maxarmor ) );
 		_hud->HandleNamedEvent ( "updateArmor" );
+	}
+
+	temp = _hud->State().GetInt("player_stamina", "-1");
+	if (temp != inventory.stamina) {
+		_hud->SetStateInt("player_staminaDelta", temp == -1 ? 0 : (temp - inventory.armor));
+		_hud->SetStateInt("player_stamina", inventory.stamina);
+		_hud->SetStateFloat("player_staminapct", idMath::ClampFloat(0.0f, 1.0f, (float)inventory.stamina / (float)inventory.maxstamina));
+		_hud->HandleNamedEvent("updateStamina");
 	}
 	
 	// Boss bar
@@ -7210,6 +7235,7 @@ void idPlayer::UpdateFocus( void ) {
 
 				ui->SetStateString( "player_health", va("%i", health ) );
 				ui->SetStateString( "player_armor", va( "%i%%", inventory.armor ) );
+				ui->SetStateString("player_stamina", va("%i%%", inventory.stamina));
 
 				kv = ent->spawnArgs.MatchPrefix( "gui_", NULL );
 				while ( kv ) {
@@ -8724,12 +8750,45 @@ void idPlayer::EvaluateControls( void ) {
 
 	oldFlags = usercmd.flags;
 
+	StaminaSys();
 	AdjustSpeed();
 
 	// update the viewangles
 	UpdateViewAngles();
 }
+/*
+==============
+idPlayer:: StaminaSys
+==============
+*/
+void idPlayer::StaminaSys(void) {
 
+	bool running = !physicsObj.OnLadder() && (usercmd.buttons & BUTTON_RUN) && (usercmd.forwardmove || usercmd.rightmove) && (usercmd.upmove >= 0);
+
+	if (physicsObj.HasJumped()) {
+		inventory.stamina -= STAMINA_JUMP_COST;
+		gameLocal.Printf("JUMP! stamina now %d\n", inventory.stamina);
+	}
+
+	if (inventory.stamina < STAMINA_JUMP_COST && usercmd.upmove > 0) {
+		usercmd.upmove = 0;
+	}
+
+	if (gameLocal.time >= nextStaminaPulse) {
+		if (running && inventory.stamina > 0) {
+			inventory.stamina--;
+			nextStaminaPulse = gameLocal.time + STAMINA_DRAIN;
+		}
+		else if (inventory.stamina < inventory.maxstamina) {
+			inventory.stamina++;
+			nextStaminaPulse = gameLocal.time + STAMINA_PULSE;
+		}
+		gameLocal.Printf("stamina v2: %d\n", inventory.stamina);
+	}
+
+	inventory.stamina = idMath::ClampInt(0, inventory.maxstamina, inventory.stamina);
+	
+}
 /*
 ==============
 idPlayer::AdjustSpeed
@@ -8744,7 +8803,7 @@ void idPlayer::AdjustSpeed( void ) {
 	} else if ( noclip ) {
 		speed = pm_noclipspeed.GetFloat();
 		bobFrac = 0.0f;
- 	} else if ( !physicsObj.OnLadder() && ( usercmd.buttons & BUTTON_RUN ) && ( usercmd.forwardmove || usercmd.rightmove ) && ( usercmd.upmove >= 0 ) ) {
+ 	} else if ( !physicsObj.OnLadder() && ( usercmd.buttons & BUTTON_RUN ) && ( usercmd.forwardmove || usercmd.rightmove ) && ( usercmd.upmove >= 0 )&& (inventory.stamina > 0 ) ) {
 		bobFrac = 1.0f;
 		speed = pm_speed.GetFloat();
 	} else {

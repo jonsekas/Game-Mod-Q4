@@ -25,6 +25,7 @@ extern const idEventDef EV_Player_SelectWeapon;
 extern const idEventDef EV_Player_Freeze;
 extern const idEventDef EV_SpectatorTouch;
 extern const idEventDef EV_Player_SetArmor;
+extern const idEventDef EV_Player_SetStamina;
 extern const idEventDef EV_Player_SetExtraProjPassEntity;
 extern const idEventDef EV_Player_DamageEffect;
 
@@ -37,6 +38,7 @@ const int	FOCUS_USABLE_TIME			= 100;
 
 const int	MAX_WEAPONS					= 16;
 const int	MAX_AMMO					= 16;
+const int	MAX_STAMINA					= 150;
 const int	CARRYOVER_FLAG_AMMO			= 0x40000000;
 const int	CARRYOVER_FLAG_ARMOR_LIGHT	= 0x20000000;
 const int	CARRYOVER_FLAG_ARMOR_HEAVY	= 0x10000000;
@@ -203,6 +205,8 @@ public:
 	int						powerups;
 	int						armor;
 	int						maxarmor;
+	int						stamina;
+	int						maxstamina;
 	int						ammo[ MAX_AMMO ];
 	int						clip[ MAX_WEAPONS ];
 	int						powerupEndTime[ POWERUP_MAX ];
@@ -354,6 +358,7 @@ public:
 	int						nextHealthPulse;	// time when health will tick down
 	int						nextAmmoRegenPulse[ MAX_AMMO ];	// time when ammo will regenerate
 	int						nextArmorPulse;		// time when armor will tick down
+	int						nextStaminaPulse;   // when stamina will tick down
 	bool					hiddenWeapon;		// if the weapon is hidden ( in noWeapons maps )
 
 	// mp stuff
@@ -1028,6 +1033,7 @@ private:
 	void					BobCycle( const idVec3 &pushVelocity );
 	void					EvaluateControls( void );
 	void					AdjustSpeed( void );
+	void					StaminaSys( void );
 	void					AdjustBodyAngles( void );
 	void					Move( void );
 	void					SetSpectateOrigin( void );
@@ -1099,6 +1105,7 @@ private:
 	// mekberg:	added sethealth
 	void					Event_SetHealth					( float newHealth );
 	void					Event_SetArmor					( float newArmor );
+	void					Event_SetStamina				( float newStamina );
 
 	void					Event_SetExtraProjPassEntity( idEntity* _extraProjPassEntity );
 	void					Event_DamageEffect			( const char *damageDefName, idEntity* _damageFromEnt  );
