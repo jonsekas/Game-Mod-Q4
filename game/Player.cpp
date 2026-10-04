@@ -76,6 +76,11 @@ const int	RAGDOLL_DEATH_TIME	= 3000;
 const int	STAMINA_PULSE		= 100;			// Regen rate for Stamina System
 const int	STAMINA_DRAIN = 50;			// Regen rate for Stamina System
 const int	STAMINA_JUMP_COST = 50;			// Regen rate for Stamina System
+const float   EVADE_SPEED = 400.0f;
+const float   EVADE_HOP = 50.0f;
+const int   EVADE_STAMINA_COST = 50;
+const int   EVADE_COOLDOWN = 5000;
+
 #ifdef _XENON
 	const int	RAGDOLL_DEATH_TIME_XEN_SP	= 1000;
 	const int	MAX_RESPAWN_TIME_XEN_SP	= 3000;
@@ -1545,6 +1550,7 @@ void idPlayer::Init( void ) {
 
 	currentLoggedAccel		= 0;
 	nextStaminaPulse = 0;
+	nextEvade = 0;
 
 	focusTime				= 0;
 	focusUI					= NULL;
@@ -2144,6 +2150,7 @@ void idPlayer::Save( idSaveGame *savefile ) const {
  	savefile->WriteInt( nextHealthPulse );
  	savefile->WriteInt( nextArmorPulse );
 	savefile->WriteInt( nextStaminaPulse );
+	savefile->WriteInt( nextEvade );
  	savefile->WriteBool( hiddenWeapon );
 
 //	savefile->WriteInt( spectator );						// Don't save MP stuff
@@ -2417,7 +2424,8 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
  	savefile->ReadBool( doingDeathSkin );
  	savefile->ReadInt( nextHealthPulse );
  	savefile->ReadInt( nextArmorPulse );
-	savefile->ReadInt(nextStaminaPulse);
+	savefile->ReadInt( nextStaminaPulse );
+	savefile->ReadInt( nextEvade );
  	savefile->ReadBool( hiddenWeapon );
 
 	assert( !spectator );								// Don't save MP stuff
@@ -8576,6 +8584,10 @@ void idPlayer::PerformImpulse( int impulse ) {
    			}
    			break;
    		}
+		case IMPULSE_23: {
+			Evade();
+			break;
+		}
 				
 		case IMPULSE_28: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
@@ -8783,7 +8795,6 @@ void idPlayer::StaminaSys(void) {
 			inventory.stamina++;
 			nextStaminaPulse = gameLocal.time + STAMINA_PULSE;
 		}
-		gameLocal.Printf("stamina v2: %d\n", inventory.stamina);
 	}
 
 	inventory.stamina = idMath::ClampInt(0, inventory.maxstamina, inventory.stamina);
@@ -8914,6 +8925,47 @@ void idPlayer::AdjustBodyAngles( void ) {
 	animator.CurrentAnim( ANIMCHANNEL_LEGS )->SetSyncedAnimWeight( 2, upBlend );
 
 }
+/*
+==============
+idPlayer:: Evade
+==============
+*/
+
+void idPlayer::Evade(void) {
+	if (usercmd.forwardmove == 0 && usercmd.rightmove == 0) {
+		return;
+	}
+	if (gameLocal.time < nextEvade || inventory.stamina < EVADE_STAMINA_COST) {
+		return;
+	}
+	gameLocal.Printf( "forward: %d  right: %d\n", usercmd.forwardmove, usercmd.rightmove );
+	idVec3 vel = physicsObj.GetLinearVelocity();
+	idVec3 forward;
+	idVec3 right;
+
+	viewAngles.ToVectors( &forward, &right, NULL );
+	idVec3 dir;
+	dir.Zero();
+	dir += forward * usercmd.forwardmove;
+	dir += right * usercmd.rightmove;
+	gameLocal.Printf( "vel: %f %f %f\n", vel.x, vel.y, vel.z );
+	dir.z = 0.0f;
+	dir.Normalize();
+	vel += dir * EVADE_SPEED;
+	vel.z += EVADE_HOP;
+	physicsObj.SetLinearVelocity( vel );
+	inventory.stamina -= EVADE_STAMINA_COST;
+	nextEvade = gameLocal.time + EVADE_COOLDOWN;
+}
+
+// void SetLinearVelocity(const idVec3& newLinearVelocity, int id = 0);
+
+// const idVec3& GetLinearVelocity(int id = 0) const;
+
+// 		idVec3 forward;
+// idVec3 right;
+// idVec3 up;
+// viewAngles.ToVectors(&forward, &right, &up);
 
 /*
 ==============

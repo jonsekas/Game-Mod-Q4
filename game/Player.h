@@ -359,6 +359,7 @@ public:
 	int						nextAmmoRegenPulse[ MAX_AMMO ];	// time when ammo will regenerate
 	int						nextArmorPulse;		// time when armor will tick down
 	int						nextStaminaPulse;   // when stamina will tick down
+	int						nextEvade;
 	bool					hiddenWeapon;		// if the weapon is hidden ( in noWeapons maps )
 
 	// mp stuff
@@ -1034,6 +1035,7 @@ private:
 	void					EvaluateControls( void );
 	void					AdjustSpeed( void );
 	void					StaminaSys( void );
+	void					Evade(void);
 	void					AdjustBodyAngles( void );
 	void					Move( void );
 	void					SetSpectateOrigin( void );

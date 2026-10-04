@@ -16,8 +16,8 @@ windowDef Desktop
 	definevec4	"ws_grey"		0.190,0.284,0.168,0.6	
 	definevec4 	"typecolor" 		0.866,0.921,0.764,1
 	definevec4 	"typecolor_strogg" 	0.988,1,0.784,1
-	definevec4	"healthicon"		0.658,0.639,0.376,0.6
-	definevec4	"armoricon"		0.658,0.639,0.376,0.6
+	definevec4	"healthicon"		0.9,0.3,0.25,0.6
+	definevec4	"armoricon"		0.4,0.6,1,0.6
 	definevec4	"healthicon_mp"		0.980,0.168,0.0196,0.8
 	definevec4	"armoricon_mp"		0.968,0.752,0.0156,0.8
 	definevec4 	"white" 		1,1,1,1
@@ -151,13 +151,13 @@ windowDef Desktop
 			if ( "gui::player_healthpct" < 0.26 )
 			{
 				set "health_valbar::matcolor" "1,0.3,0,0.35" ;
-				set "health_val::matcolor" "1,0.3,0,0.5" ;
+				set "health_val::matcolor" "1,0.1,0.05,0.6" ;
 				set "health_ekg::matcolor" "0.3,0.05,0,1" ;
 				set "health_backbar_add::visible" "1" ;
 			} else	{
-				set "health_valbar::matcolor" "0.698,0.811,0.427,0.2" ;
-				set "health_val::matcolor" "0.698,0.811,0.427,0.35" ;
-				set "health_ekg::matcolor" "0.0862,0.105,0.0549,1" ;
+				set "health_valbar::matcolor" "	0.9,0.15,0.1,0.2" ;
+				set "health_val::matcolor" "0.9,0.15,0.1,0.35" ;
+				set "health_ekg::matcolor" "0.15,0.02,0.02,1" ;
 				set "health_backbar_add::visible" "0" ;
 			}	
 		} else {
@@ -718,7 +718,7 @@ windowDef Desktop
 			rect	190,420,125,59
 			visible	1
 			background	"gfx/guis/hud/valbar"
-			matcolor	0.701,0.815,0.431,0.2
+			matcolor	0.9,0.15,0.1,0.2
 			shear	0,-.22
 		}
 		windowDef health_ekg
@@ -726,7 +726,7 @@ windowDef Desktop
 			rect	190,420,125,59
 			visible	1
 			background	"gfx/guis/hud/ekg"
-			matcolor	0.0862,0.105,0.0549,1
+			matcolor	0.15,0.02,0.02,1
 			shear	0,-.22
 		}
 		windowDef p_health_val
@@ -739,7 +739,7 @@ windowDef Desktop
 				rect	-120 + ( "gui::player_healthpct" * 115 ),0,125,59
 				visible	1
 				background	"gfx/guis/hud/valbar"
-				matcolor	0.701,0.815,0.431,0.35
+				matcolor	0.9,0.15,0.1,0.35
 				shear	0,-.22
 			}
 		}
@@ -790,13 +790,13 @@ windowDef Desktop
 // armor
 //-----------------------		
 	
-	windowDef p_armor
+		windowDef p_armor
 	{
 		rect	0,0,640,480
 		visible	("gui::player_armor" > 0 && "gui::mp" == 0 )
 		windowDef armor_backbar
 		{
-			rect	326,420,125,59
+			rect	462,420,125,59
 			visible	1
 			background	"gfx/guis/hud/backbar"
 			matcolor	0,0,0,0.5
@@ -804,15 +804,15 @@ windowDef Desktop
 		}
 		windowDef armor_valbar
 		{
-			rect	326,420,125,59
+			rect	462,420,125,59
 			visible	1
 			background	"gfx/guis/hud/arbar"
-			matcolor	0.698,0.811,0.427,0.2
+			matcolor	0.2,0.5,1,0.2
 			shear	0,-.22
 		}
 		windowDef p_armor_val
 		{
-			rect	446 - ( "gui::player_armorpct" * 115 ),420,115,59
+			rect	582 - ( "gui::player_armorpct" * 115 ),420,115,59
 			visible	1
 			shear	0,-.22
 			windowDef armor_val
@@ -820,18 +820,18 @@ windowDef Desktop
 				rect	-120 + ( "gui::player_armorpct" * 115 ),0,125,59
 				visible	1
 				background	"gfx/guis/hud/arbar"
-				matcolor	0.698,0.811,0.427,0.349
+				matcolor	0.2,0.5,1,0.349
 				shear	0,-.22
 			}
 		}
 		windowDef d_armor_amount
 		{
-			rect	390,427,58,31
+			rect	526,427,58,31
 			visible	0
 		}
 		windowDef armor_amount
 		{
-			rect	392,429,52,26
+			rect	528,429,52,26
 			visible	1
 			forecolor	0.866,0.921,0.764,1
 			text	"gui::player_armor"
@@ -854,10 +854,69 @@ windowDef Desktop
 		
 		windowDef icon_armorvest
 		{
-			rect	424,458,16,16
+			rect	560,458,16,16
 			visible	1
 			background	"gfx/guis/hud/icons/item_armor"
 			matcolor	0.658,0.639,0.376,0.6
+		}
+	}
+
+
+//-----------------------
+// stamina
+//-----------------------
+
+	windowDef p_stamina
+	{
+		rect	0,0,640,480
+		visible	("gui::mp" == 0 )
+		windowDef stamina_backbar
+		{
+			rect	326,420,125,59
+			visible	1
+			background	"gfx/guis/hud/backbar"
+			matcolor	0,0,0,0.5
+			shear	0,-.22
+		}
+		windowDef stamina_valbar
+		{
+			rect	326,420,125,59
+			visible	1
+			background	"gfx/guis/hud/valbar"
+			matcolor	0.9,0.75,0.3,0.2
+			shear	0,-.22
+		}
+		windowDef p_stamina_val
+		{
+			rect	446 - ( "gui::player_staminapct" * 115 ),420,115,59
+			visible	1
+			shear	0,-.22
+			windowDef stamina_val
+			{
+				rect	-120 + ( "gui::player_staminapct" * 115 ),0,125,59
+				visible	1
+				background	"gfx/guis/hud/valbar"
+				matcolor	0.9,0.75,0.3,0.35
+				shear	0,-.22
+			}
+		}
+		windowDef stamina_amount
+		{
+			rect	392,429,52,26
+			visible	1
+			forecolor	0.866,0.921,0.764,1
+			text	"gui::player_stamina"
+			textscale	0.5
+			font	"fonts/chain"
+			shear	0,-.22
+			textalign	2
+		}
+		windowDef icon_stamina
+		{
+			rect	424,458,16,16
+			visible	1
+			background	"gfx/guis/hud/icons/item_stamina"
+			matcolor	0.9,0.75,0.3,0.6
 		}
 	}
 
