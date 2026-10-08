@@ -1,0 +1,16 @@
+entityDef weapon_sword
+{
+	"inherit"					"weapon_gauntlet"
+	"inv_weapon"				"weapon_sword"
+	"range"						"200"
+	"single_swing"				"1"
+	"def_damage"				"damage_sword"
+	"swingCost"					"25"
+	"swingDelay"				"5"
+}
+
+entityDef damage_sword
+{
+	"inherit"					"weapon_gauntlet"
+	"damage"					"90"
+}	

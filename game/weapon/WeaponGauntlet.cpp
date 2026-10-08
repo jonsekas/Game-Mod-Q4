@@ -28,6 +28,11 @@ protected:
 	int					bladeAccel;
 	
 	float				range;
+	bool				single_swing;
+	bool				waitForRelease;
+	int					swingCost;
+	int					nextSwingTime;
+	int					swingDelay;
 	
 	rvClientEffectPtr	impactEffect;
 	int					impactMaterial;
@@ -99,10 +104,16 @@ void rvWeaponGauntlet::Spawn ( void ) {
 	bladeAccel		= SEC2MS ( spawnArgs.GetFloat ( "blade_accel", ".25" ) );
 	
 	range			= spawnArgs.GetFloat ( "range", "32" );
+	single_swing = spawnArgs.GetBool("single_swing", "0");
+	swingCost		= spawnArgs.GetInt( "swingCost" , "0");
+	nextSwingTime = 0;
+	swingDelay = SEC2MS (spawnArgs.GetFloat ( "swingDelay", "0") );
+	
 
 	impactMaterial = -1;
 	impactEffect   = NULL;
 	loopSound = LOOP_NONE;
+	waitForRelease = false;
 }
 
 /*
@@ -119,6 +130,11 @@ void rvWeaponGauntlet::Save ( idSaveGame *savefile ) const {
 	savefile->WriteInt ( bladeAccel );
 	
 	savefile->WriteFloat ( range );
+	savefile->WriteBool( single_swing );
+	savefile->WriteBool( waitForRelease );
+	savefile->WriteInt( swingCost );
+	savefile->WriteInt( nextSwingTime );
+	savefile->WriteInt( swingDelay );
 	
 	savefile->WriteObject ( impactEffect );
 	savefile->WriteInt ( impactMaterial );
@@ -139,6 +155,11 @@ void rvWeaponGauntlet::Restore ( idRestoreGame *savefile ) {
 	savefile->ReadInt ( bladeAccel );
 	
 	savefile->ReadFloat ( range );
+	savefile->ReadBool( single_swing );
+	savefile->ReadBool( waitForRelease );
+	savefile->ReadInt( swingCost );
+	savefile->ReadInt( nextSwingTime );
+	savefile->ReadInt( swingDelay );
 	
 	savefile->ReadObject ( reinterpret_cast<idClass*&>( impactEffect ) );
 	savefile->ReadInt ( impactMaterial );
@@ -446,8 +467,12 @@ stateResult_t rvWeaponGauntlet::State_Idle ( const stateParms_t& parms ) {
 				SetState ( "Lower", 4 );
 				return SRESULT_DONE;
 			}
-			if ( wsfl.attack ) {
-				SetState ( "Fire", 2 );
+			if ( !wsfl.attack ) {
+				waitForRelease = false;
+				
+			}
+			if ( wsfl.attack && !waitForRelease && owner->inventory.stamina >= swingCost && gameLocal.time >= nextSwingTime ) {
+				SetState("Fire", 2);
 				return SRESULT_DONE;
 			}
 			return SRESULT_WAIT;
@@ -470,7 +495,14 @@ stateResult_t rvWeaponGauntlet::State_Fire ( const stateParms_t& parms ) {
 		STAGE_END_WAIT
 	};	
 	switch ( parms.stage ) {
-		case STAGE_START:	
+		case STAGE_START:
+			if ( single_swing == true ) {
+				Attack();
+				nextSwingTime = gameLocal.time + swingDelay;
+				owner->inventory.stamina -= swingCost;
+				waitForRelease = true;
+				return SRESULT_STAGE(STAGE_END);
+			}
 			PlayAnim ( ANIMCHANNEL_ALL, "attack_start", parms.blendFrames );
 			StartBlade ( );
 			loopSound = LOOP_NONE;
@@ -496,7 +528,7 @@ stateResult_t rvWeaponGauntlet::State_Fire ( const stateParms_t& parms ) {
 			}
 			Attack ( );
 			return SRESULT_WAIT;
-		
+			
 		case STAGE_END:
 			PlayAnim ( ANIMCHANNEL_ALL, "attack_end", parms.blendFrames );
 			StopBlade ( );
