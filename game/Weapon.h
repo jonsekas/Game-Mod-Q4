@@ -282,7 +282,7 @@ public:
 		bool		flashlight			:1;
 		bool		zoom				:1;
 		bool		altAttack			:1;
-	} wsfl;
+	} wsfl;		
 	
 	// Generic flags
 	struct weaponFlags_s {
@@ -334,6 +334,7 @@ public:
 
 	int								fireRate;
 	int								altFireRate;
+	int								blockCost;
 	float							spread;
 	int								nextAttackTime;
 

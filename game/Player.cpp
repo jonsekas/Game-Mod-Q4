@@ -10150,6 +10150,10 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 	}
 
+	if (TryBlock(attacker)) {
+		return;
+	}
+
 	const idDeclEntityDef *damageDef = gameLocal.FindEntityDef( damageDefName, false );
 	if ( !damageDef ) {
 		gameLocal.Warning( "Unknown damageDef '%s'", damageDefName );

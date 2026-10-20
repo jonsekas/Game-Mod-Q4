@@ -628,6 +628,7 @@ void rvWeapon::Spawn ( void ) {
 	if( altFireRate == 0 ) {
 		altFireRate = fireRate;
 	}
+	blockCost	= spawnArgs.GetInt("blockCost");
 	spread		= (gameLocal.IsMultiplayer()&&spawnArgs.FindKey("spread_mp"))?spawnArgs.GetFloat ( "spread_mp" ):spawnArgs.GetFloat ( "spread" );
 	nextAttackTime = 0;
 
@@ -1026,9 +1027,8 @@ void rvWeapon::Think ( void ) {
 	
 	// Update the zoom variable before updating the script
 	wsfl.zoom = owner->IsZoomed( );
-
-	// Right mouse button held, independent of whether the weapon supports camera zoom
-	wsfl.altAttack = ( owner->usercmd.buttons & BUTTON_ZOOM ) != 0;
+ 
+	wsfl.altAttack = (owner-> usercmd.buttons & BUTTON_ZOOM) != 0;
 
 	// Only update the state loop on new frames
  	if ( gameLocal.isNewFrame ) {
@@ -1327,6 +1327,7 @@ void rvWeapon::Save ( idSaveGame *savefile ) const {
 	savefile->WriteVec3		( ejectOffset );	// cnicholson: Added unsaved var
 
 	savefile->WriteInt		( fireRate );
+	savefile->WriteInt		( blockCost );
 	savefile->WriteFloat	( spread );
 	// savefile->WriteInt	( nextAttackTime ); // cnicholson: This is set to 0 in restore, so don't save it
 
@@ -1459,6 +1460,7 @@ void rvWeapon::Restore ( idRestoreGame *savefile ) {
 	savefile->ReadVec3		( ejectOffset );	// cnicholson: Added unrestored var
 
 	savefile->ReadInt		( fireRate );
+	savefile->ReadInt		( blockCost );
 	savefile->ReadFloat		( spread );
 	nextAttackTime = 0;
 

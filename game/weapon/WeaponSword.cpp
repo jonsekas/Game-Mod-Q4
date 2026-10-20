@@ -34,10 +34,14 @@ protected:
 	int					nextSwingTime;
 	int					swingDelay;
 
+	int					nextBlockTime;
+	int					blockDelay;
+
 	rvClientEffectPtr	impactEffect;
 	int					impactMaterial;
 
 	void				Attack(void);
+	void				Block(void);
 	void				StartBlade(void);
 	void				StopBlade(void);
 
@@ -55,6 +59,7 @@ private:
 	stateResult_t		State_Lower(const stateParms_t& parms);
 	stateResult_t		State_Idle(const stateParms_t& parms);
 	stateResult_t		State_Fire(const stateParms_t& parms);
+	stateResult_t		State_Block(const stateParms_t& parms);
 
 	CLASS_STATES_PROTOTYPE(rvWeaponSword);
 };
@@ -107,7 +112,9 @@ void rvWeaponSword::Spawn(void) {
 	single_swing = spawnArgs.GetBool("single_swing", "0");
 	swingCost = spawnArgs.GetInt("swingCost", "0");
 	nextSwingTime = 0;
+	nextBlockTime = 0;
 	swingDelay = SEC2MS(spawnArgs.GetFloat("swingDelay", "0"));
+	blockDelay = SEC2MS(spawnArgs.GetFloat("blockDelay", "0"));
 
 
 	impactMaterial = -1;
@@ -134,7 +141,9 @@ void rvWeaponSword::Save(idSaveGame* savefile) const {
 	savefile->WriteBool(waitForRelease);
 	savefile->WriteInt(swingCost);
 	savefile->WriteInt(nextSwingTime);
+	savefile->WriteInt(nextBlockTime);
 	savefile->WriteInt(swingDelay);
+	savefile->WriteInt(blockDelay);
 
 	savefile->WriteObject(impactEffect);
 	savefile->WriteInt(impactMaterial);
@@ -159,7 +168,9 @@ void rvWeaponSword::Restore(idRestoreGame* savefile) {
 	savefile->ReadBool(waitForRelease);
 	savefile->ReadInt(swingCost);
 	savefile->ReadInt(nextSwingTime);
+	savefile->ReadInt(nextBlockTime);
 	savefile->ReadInt(swingDelay);
+	savefile->ReadInt(blockDelay);
 
 	savefile->ReadObject(reinterpret_cast<idClass*&>(impactEffect));
 	savefile->ReadInt(impactMaterial);
@@ -330,6 +341,46 @@ void rvWeaponSword::Attack(void) {
 
 /*
 ================
+rvWeaponSword :: Block
+================
+*/
+
+void rvWeaponSword::Block(void) {
+	trace_t		tr;
+	idEntity* ent;
+
+	gameLocal.TracePoint(owner, tr,
+		playerViewOrigin,
+		playerViewOrigin + playerViewAxis[0] * range,
+		MASK_SHOT_RENDERMODEL, owner);
+	// RAVEN END
+	owner->WeaponFireFeedback(&weaponDef->dict);
+
+	if (tr.fraction >= 1.0f) {
+		if (impactEffect) {
+			impactEffect->Stop();
+			impactEffect = NULL;
+		}
+		impactMaterial = -1;
+		PlayLoopSound(LOOP_NONE);
+		return;
+	}
+
+	// Entity hitting us?
+	ent = gameLocal.entities[tr.c.entityNum];
+
+	if (gameLocal.time > nextBlockTime) {
+		if (owner) {
+			if (owner->fl.takedamage) {
+				float dmgScale = 0.0f;
+			}
+		}
+	}
+
+}
+
+/*
+================
 rvWeaponSword::StartBlade
 ================
 */
@@ -384,6 +435,7 @@ STATE("Raise", rvWeaponSword::State_Raise)
 STATE("Lower", rvWeaponSword::State_Lower)
 STATE("Idle", rvWeaponSword::State_Idle)
 STATE("Fire", rvWeaponSword::State_Fire)
+STATE("Block", rvWeaponSword::State_Block)
 END_CLASS_STATES
 
 /*
@@ -480,6 +532,10 @@ stateResult_t rvWeaponSword::State_Idle(const stateParms_t& parms) {
 			SetState("Fire", 2);
 			return SRESULT_DONE;
 		}
+		if ( wsfl.altAttack ) {
+			SetState("Block", 2);
+			return SRESULT_DONE;
+		}
 		return SRESULT_WAIT;
 	}
 	return SRESULT_ERROR;
@@ -549,3 +605,37 @@ stateResult_t rvWeaponSword::State_Fire(const stateParms_t& parms) {
 	}
 	return SRESULT_ERROR;
 }
+
+/*
+================
+rvWeaponSword :: State_Block
+================
+*/
+stateResult_t rvWeaponSword::State_Block(const stateParms_t& parms) {
+	enum {
+		STAGE_START,
+		STAGE_WAIT,
+		STAGE_END
+	};
+	switch (parms.stage) {
+
+	case STAGE_START:
+		owner->pfl.isBlocking = true;
+		owner->blockStartTime = gameLocal.time;
+		return SRESULT_STAGE(STAGE_WAIT);
+	case STAGE_WAIT:
+		if (!wsfl.altAttack || wsfl.lowerWeapon) {
+			return SRESULT_STAGE(STAGE_END);
+		}
+		return SRESULT_WAIT;
+	case STAGE_END:
+		owner->pfl.isBlocking = false;
+		PostState("Idle", parms.blendFrames);
+		return SRESULT_DONE;
+	}
+	return SRESULT_ERROR;
+}
+
+
+
+

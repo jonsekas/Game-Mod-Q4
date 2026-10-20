@@ -307,6 +307,7 @@ public:
 
 	int						lastHitTime;			// last time projectile fired by player hit target
 	int						lastSavingThrowTime;	// for the "free miss" effect
+	int						blockStartTime;
 
 	struct playerFlags_s {
 		bool		forward			:1;
@@ -331,6 +332,7 @@ public:
 		bool		hearingLoss		:1;
 		bool		objectiveFailed	:1;
 		bool		noFallingDamage :1;
+		bool		isBlocking		:1;
 	} pfl;
 		
 	// inventory
@@ -1036,6 +1038,7 @@ private:
 	void					AdjustSpeed( void );
 	void					StaminaSys( void );
 	void					Evade(void);
+	bool					TryBlock( idEntity* attacker );
 	void					AdjustBodyAngles( void );
 	void					Move( void );
 	void					SetSpectateOrigin( void );
