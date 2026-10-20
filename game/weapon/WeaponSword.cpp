@@ -341,46 +341,6 @@ void rvWeaponSword::Attack(void) {
 
 /*
 ================
-rvWeaponSword :: Block
-================
-*/
-
-void rvWeaponSword::Block(void) {
-	trace_t		tr;
-	idEntity* ent;
-
-	gameLocal.TracePoint(owner, tr,
-		playerViewOrigin,
-		playerViewOrigin + playerViewAxis[0] * range,
-		MASK_SHOT_RENDERMODEL, owner);
-	// RAVEN END
-	owner->WeaponFireFeedback(&weaponDef->dict);
-
-	if (tr.fraction >= 1.0f) {
-		if (impactEffect) {
-			impactEffect->Stop();
-			impactEffect = NULL;
-		}
-		impactMaterial = -1;
-		PlayLoopSound(LOOP_NONE);
-		return;
-	}
-
-	// Entity hitting us?
-	ent = gameLocal.entities[tr.c.entityNum];
-
-	if (gameLocal.time > nextBlockTime) {
-		if (owner) {
-			if (owner->fl.takedamage) {
-				float dmgScale = 0.0f;
-			}
-		}
-	}
-
-}
-
-/*
-================
 rvWeaponSword::StartBlade
 ================
 */
