@@ -335,6 +335,10 @@ public:
 	int								fireRate;
 	int								altFireRate;
 	int								blockCost;
+	int								perfectBlockWindow;
+	int								perfectBlockGain;
+	int								perfectBlockCooldown;
+	int								blockCooldown;
 	float							spread;
 	int								nextAttackTime;
 

@@ -308,6 +308,8 @@ public:
 	int						lastHitTime;			// last time projectile fired by player hit target
 	int						lastSavingThrowTime;	// for the "free miss" effect
 	int						blockStartTime;
+	int						nextPerfectBlockTime;
+	int						nextBlockTime;
 
 	struct playerFlags_s {
 		bool		forward			:1;
@@ -361,6 +363,7 @@ public:
 	int						nextAmmoRegenPulse[ MAX_AMMO ];	// time when ammo will regenerate
 	int						nextArmorPulse;		// time when armor will tick down
 	int						nextStaminaPulse;   // when stamina will tick down
+	int						nextStaminaRegenTime;
 	int						nextEvade;
 	bool					hiddenWeapon;		// if the weapon is hidden ( in noWeapons maps )
 
@@ -441,6 +444,7 @@ public:
 
 	void					Spawn( void );
 	void					Think( void );
+	void					StaminaManager(int amount);
 
 	// save games
 	void					Save( idSaveGame *savefile ) const;					// archives object for save game file

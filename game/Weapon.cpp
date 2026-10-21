@@ -629,6 +629,10 @@ void rvWeapon::Spawn ( void ) {
 		altFireRate = fireRate;
 	}
 	blockCost	= spawnArgs.GetInt("blockCost");
+	perfectBlockWindow = SEC2MS(spawnArgs.GetFloat ("perfectBlockWindow") );
+	blockCooldown = SEC2MS(spawnArgs.GetFloat("blockCooldown"));
+	perfectBlockGain = spawnArgs.GetInt("perfectBlockGain");
+	perfectBlockCooldown = SEC2MS(spawnArgs.GetFloat("perfectBlockCooldown"));
 	spread		= (gameLocal.IsMultiplayer()&&spawnArgs.FindKey("spread_mp"))?spawnArgs.GetFloat ( "spread_mp" ):spawnArgs.GetFloat ( "spread" );
 	nextAttackTime = 0;
 
@@ -1328,6 +1332,10 @@ void rvWeapon::Save ( idSaveGame *savefile ) const {
 
 	savefile->WriteInt		( fireRate );
 	savefile->WriteInt		( blockCost );
+	savefile->WriteInt		( perfectBlockWindow );
+	savefile->WriteInt		( perfectBlockGain );
+	savefile->WriteInt		( perfectBlockCooldown );
+	savefile->WriteInt      ( blockCooldown );
 	savefile->WriteFloat	( spread );
 	// savefile->WriteInt	( nextAttackTime ); // cnicholson: This is set to 0 in restore, so don't save it
 
@@ -1461,6 +1469,10 @@ void rvWeapon::Restore ( idRestoreGame *savefile ) {
 
 	savefile->ReadInt		( fireRate );
 	savefile->ReadInt		( blockCost );
+	savefile->ReadInt		( perfectBlockWindow );
+	savefile->ReadInt		( perfectBlockGain );
+	savefile->ReadInt		( perfectBlockCooldown );
+	savefile->ReadInt		( blockCooldown );
 	savefile->ReadFloat		( spread );
 	nextAttackTime = 0;
 

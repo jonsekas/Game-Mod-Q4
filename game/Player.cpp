@@ -1542,8 +1542,12 @@ void idPlayer::Init( void ) {
  	influenceSkin			= NULL;
 
 	currentLoggedAccel		= 0;
-	nextStaminaPulse = 0;
-	nextEvade = 0;
+	nextStaminaPulse		= 0;
+	nextStaminaRegenTime	= 0;
+	nextEvade				= 0;
+	nextPerfectBlockTime	= 0;
+	nextBlockTime			= 0;
+	blockStartTime			= 0;
 
 	focusTime				= 0;
 	focusUI					= NULL;
@@ -2143,6 +2147,10 @@ void idPlayer::Save( idSaveGame *savefile ) const {
  	savefile->WriteInt( nextHealthPulse );
  	savefile->WriteInt( nextArmorPulse );
 	savefile->WriteInt( nextStaminaPulse );
+	savefile->WriteInt( nextStaminaRegenTime );
+	savefile->WriteInt( blockStartTime );
+	savefile->WriteInt( nextPerfectBlockTime );
+	savefile->WriteInt( nextBlockTime );
 	savefile->WriteInt( nextEvade );
  	savefile->WriteBool( hiddenWeapon );
 
@@ -2418,6 +2426,10 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
  	savefile->ReadInt( nextHealthPulse );
  	savefile->ReadInt( nextArmorPulse );
 	savefile->ReadInt( nextStaminaPulse );
+	savefile->ReadInt( nextStaminaRegenTime );
+	savefile->ReadInt( blockStartTime );
+	savefile->ReadInt( nextPerfectBlockTime );
+	savefile->ReadInt( nextBlockTime );
 	savefile->ReadInt( nextEvade );
  	savefile->ReadBool( hiddenWeapon );
 

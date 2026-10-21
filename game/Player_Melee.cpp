@@ -5,6 +5,8 @@
 
 
 bool idPlayer::TryBlock( idEntity* attacker) {
+
+
 	if ( !pfl.isBlocking ) {
 		return false;
 	}
@@ -14,10 +16,20 @@ bool idPlayer::TryBlock( idEntity* attacker) {
 	if (!weapon) {
 		return false;
 	}
-	if (inventory.stamina < weapon->blockCost) {
+	if (inventory.stamina < weapon->blockCost) {	
 		return false;
 	}
-	inventory.stamina -= weapon->blockCost;
+	int					elapsed;
+	elapsed = gameLocal.time - blockStartTime;
+
+	if ( elapsed <= weapon->perfectBlockWindow && gameLocal.time >= nextPerfectBlockTime ) {
+		inventory.stamina += weapon->perfectBlockGain;
+		inventory.stamina = idMath::ClampInt(0, inventory.maxstamina, inventory.stamina);
+		nextPerfectBlockTime = gameLocal.time + weapon->perfectBlockCooldown;
+	}
+	else {
+		StaminaManager( weapon->blockCost );
+	}
 	return true;
 
 

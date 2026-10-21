@@ -33,8 +33,6 @@ protected:
 	int					swingCost;
 	int					nextSwingTime;
 	int					swingDelay;
-
-	int					nextBlockTime;
 	int					blockDelay;
 
 	rvClientEffectPtr	impactEffect;
@@ -112,7 +110,6 @@ void rvWeaponSword::Spawn(void) {
 	single_swing = spawnArgs.GetBool("single_swing", "0");
 	swingCost = spawnArgs.GetInt("swingCost", "0");
 	nextSwingTime = 0;
-	nextBlockTime = 0;
 	swingDelay = SEC2MS(spawnArgs.GetFloat("swingDelay", "0"));
 	blockDelay = SEC2MS(spawnArgs.GetFloat("blockDelay", "0"));
 
@@ -141,7 +138,6 @@ void rvWeaponSword::Save(idSaveGame* savefile) const {
 	savefile->WriteBool(waitForRelease);
 	savefile->WriteInt(swingCost);
 	savefile->WriteInt(nextSwingTime);
-	savefile->WriteInt(nextBlockTime);
 	savefile->WriteInt(swingDelay);
 	savefile->WriteInt(blockDelay);
 
@@ -168,7 +164,6 @@ void rvWeaponSword::Restore(idRestoreGame* savefile) {
 	savefile->ReadBool(waitForRelease);
 	savefile->ReadInt(swingCost);
 	savefile->ReadInt(nextSwingTime);
-	savefile->ReadInt(nextBlockTime);
 	savefile->ReadInt(swingDelay);
 	savefile->ReadInt(blockDelay);
 
@@ -492,7 +487,7 @@ stateResult_t rvWeaponSword::State_Idle(const stateParms_t& parms) {
 			SetState("Fire", 2);
 			return SRESULT_DONE;
 		}
-		if ( wsfl.altAttack ) {
+		if ( wsfl.altAttack && gameLocal.time >= owner->nextBlockTime ) {
 			SetState("Block", 2);
 			return SRESULT_DONE;
 		}
@@ -520,7 +515,7 @@ stateResult_t rvWeaponSword::State_Fire(const stateParms_t& parms) {
 		if (single_swing == true) {
 			Attack();
 			nextSwingTime = gameLocal.time + swingDelay;
-			owner->inventory.stamina -= swingCost;
+			owner->StaminaManager(swingCost);
 			waitForRelease = true;
 			return SRESULT_STAGE(STAGE_END);
 		}
@@ -590,6 +585,7 @@ stateResult_t rvWeaponSword::State_Block(const stateParms_t& parms) {
 		return SRESULT_WAIT;
 	case STAGE_END:
 		owner->pfl.isBlocking = false;
+		owner->nextBlockTime = gameLocal.time + blockCooldown;
 		PostState("Idle", parms.blendFrames);
 		return SRESULT_DONE;
 	}

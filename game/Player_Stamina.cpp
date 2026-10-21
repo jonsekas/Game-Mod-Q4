@@ -11,6 +11,7 @@ const float   EVADE_SPEED = 400.0f;
 const float   EVADE_HOP = 50.0f;
 const int   EVADE_STAMINA_COST = 50;
 const int   EVADE_COOLDOWN = 5000;
+const int	STAMINA_REGEN_DELAY = 2750;
 
 
 /*
@@ -23,7 +24,7 @@ void idPlayer::StaminaSys(void) {
 	bool running = !physicsObj.OnLadder() && (usercmd.buttons & BUTTON_RUN) && (usercmd.forwardmove || usercmd.rightmove) && (usercmd.upmove >= 0);
 
 	if (physicsObj.HasJumped()) {
-		inventory.stamina -= STAMINA_JUMP_COST;
+		StaminaManager( STAMINA_JUMP_COST );
 		gameLocal.Printf("JUMP! stamina now %d\n", inventory.stamina);
 	}
 
@@ -33,10 +34,10 @@ void idPlayer::StaminaSys(void) {
 
 	if (gameLocal.time >= nextStaminaPulse) {
 		if (running && inventory.stamina > 0) {
-			inventory.stamina--;
+			StaminaManager(1);
 			nextStaminaPulse = gameLocal.time + STAMINA_DRAIN;
 		}
-		else if (inventory.stamina < inventory.maxstamina) {
+		else if (inventory.stamina < inventory.maxstamina && gameLocal.time >= nextStaminaRegenTime ) {
 			inventory.stamina++;
 			nextStaminaPulse = gameLocal.time + STAMINA_PULSE;
 		}
@@ -75,6 +76,17 @@ void idPlayer::Evade(void) {
 	vel += dir * EVADE_SPEED;
 	vel.z += EVADE_HOP;
 	physicsObj.SetLinearVelocity(vel);
-	inventory.stamina -= EVADE_STAMINA_COST;
+	StaminaManager(EVADE_STAMINA_COST);
 	nextEvade = gameLocal.time + EVADE_COOLDOWN;
+}
+
+/*
+============
+StaminaManager
+*/
+void idPlayer::StaminaManager(int amount) {
+	inventory.stamina -= amount;
+	nextStaminaRegenTime = gameLocal.time + STAMINA_REGEN_DELAY;
+
+
 }
