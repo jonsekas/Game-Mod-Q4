@@ -351,6 +351,8 @@ public:
 	
 	idUserInterface *		objectiveSystem;
 	idUserInterface *		cinematicHud;
+	idUserInterface *		skillTreeGui;
+	bool					skillTreeOpen;
 	bool					objectiveSystemOpen;
 	bool					objectiveButtonReleased;
 	bool					disableHud;
@@ -445,6 +447,7 @@ public:
 	void					Spawn( void );
 	void					Think( void );
 	void					StaminaManager(int amount);
+	void					CloseSkillTree( void );
 
 	// save games
 	void					Save( idSaveGame *savefile ) const;					// archives object for save game file

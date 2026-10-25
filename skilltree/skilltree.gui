@@ -1,0 +1,693 @@
+windowDef Desktop
+{
+	rect	0,0,640,480
+	visible	1
+	backcolor 0,0,0,0.7
+	menugui	1
+
+	windowDef Col_Prowess
+	{
+		rect 0, 0, 160, 480
+
+		windowDef Hdr_Prowess
+		{
+			rect 0,8,160,30
+			text "Prowess"
+			textAlign 1
+			textScale 0.4
+			forecolor 1,1,1,1
+			font "font/chain"
+
+		}
+		windowDef Line_Prowess
+		{
+			rect 0,46,160,1
+			backcolor 1,1,1,1
+		}
+
+		windowDef Skill_Parry
+		{
+			rect		6,60,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Parry_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Parry"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Fighter
+		{
+			rect		58,60,40,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Fighter_Text
+			{
+				rect		-2,7,40,14        // relative to the box: starts 9 down
+				text		"Fighter"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Block
+		{
+			rect		110,60,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Block_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Block"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Riposte
+		{
+			rect		6,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Riposte_Text
+			{
+				rect		-2,7,40,14        // relative to the box: starts 9 down
+				text		"Riposte"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Warrior
+		{
+			rect		58,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Warrior_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Warrior"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Sidestep
+		{
+			rect		110,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Sidestep_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Sidestep"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Hdr_Fortitude
+		{
+			rect 0,186,160,30
+			text "Fortitude"
+			textAlign 1
+			textScale 0.4
+			forecolor 1,1,1,1
+			font "font/chain"
+
+		}
+		windowDef Line_Fortitude
+		{
+			rect 0,224,160,1
+			backcolor 1,1,1,1
+		}
+		windowDef Skill_Unburdened
+		{
+			rect		22,238,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Unburdened_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Unburdened"
+				textalign	1
+				textscale	0.13
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Outlasting
+		{
+			rect		22,278,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Outlasting_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Outlasting"
+				textalign	1
+				textscale	0.14
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Brave
+		{
+			rect		94,238,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Brave_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Brave"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Vigor
+		{
+			rect		94,278,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Outlasting_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Vigor"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+	}
+	windowDef Col_Light
+	{
+		rect 160, 0, 160, 480
+
+		windowDef Hdr_Light
+		{
+			rect 0,8,160,30
+			text "Light"
+			textAlign 1
+			textScale 0.4
+			forecolor 1,1,1,1
+			font "font/chain"
+
+		}
+		windowDef Line_Light
+		{
+			rect 0,46,160,1
+			backcolor 1,1,1,1
+		}
+
+		windowDef Skill_Greatsword
+		{
+			rect		22,60,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Greatsword_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Greatsword"
+				textalign	1
+				textscale	0.13
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Spear
+		{
+			rect		22,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Spear_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Spear"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Paladin
+		{
+			rect		22,140,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Paladin_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Paladin"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_blessedPowder
+		{
+			rect		94,60,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_blessedPowder_Text
+			{
+				rect		-2,3,44,22       // relative to the box: starts 9 down
+				text		"Blessed \nPowder"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_theLight
+		{
+			rect		94,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_theLight_Text
+			{
+				rect		-2,3,44,22      // relative to the box: starts 9 down
+				text		"The \nLight"
+				textalign	1
+				textscale	0.14
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_theManifesto
+		{
+			rect		94,140,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_theManifesto_Text
+			{
+				rect		-2,3,44,22        // relative to the box: starts 9 down
+				text		"The \nManifesto"
+				textalign	1
+				textscale	0.13
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+
+	}
+	windowDef Col_Dark
+	{
+		rect 320, 0, 160, 480
+
+		windowDef Hdr_Dark
+		{
+			rect 0,8,160,30
+			text "Dark"
+			textAlign 1
+			textScale 0.4
+			forecolor 1,1,1,1
+			font "font/chain"
+
+		}
+		windowDef Line_Dark	
+		{
+			rect 0,46,160,1
+			backcolor 1,1,1,1
+		}
+
+		windowDef Skill_Longsword
+		{
+			rect		22,60,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Longsword_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Longsword"
+				textalign	1
+				textscale	0.13
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Heretic
+		{
+			rect		22,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Heretic_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Heretic"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_impossiblySkilled
+		{
+			rect		22,140,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_impossiblySkilled_Text
+			{
+				rect		-2,3,44,22        // relative to the box: starts 9 down
+				text		"Impossibly \nSkilled"
+				textalign	1
+				textscale	0.13
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_dualDaggers
+		{
+			rect		94,60,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_dualDaggers_Text
+			{
+				rect		-2,3,44,22       // relative to the box: starts 9 down
+				text		"Dual \nDaggers"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Encore
+		{
+			rect		94,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Encore_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Encore"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_dualSwords
+		{
+			rect		94,140,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_dualSwords_Text
+			{
+				rect		-2,3,44,22       // relative to the box: starts 9 down
+				text		"Dual \nSwords"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+	}
+windowDef Col_Ingenuity
+	{
+		rect 480, 0, 160, 480
+
+		windowDef Hdr_Ingenuity
+		{
+			rect 0,8,160,30
+			text "Ingenuity"
+			textAlign 1
+			textScale 0.4
+			forecolor 1,1,1,1
+			font "font/chain"
+
+		}
+		windowDef Line_Ingenuity
+		{
+			rect 0,46,160,1
+			backcolor 1,1,1,1
+		}
+
+		windowDef Skill_Crossbow
+		{
+			rect		6,60,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Crossbow_Text
+			{
+				rect		-2,7,40,14        // relative to the box: starts 9 down
+				text		"Crossbow"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_repeatingCrossbow
+		{
+			rect		6,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_repeatingCrossbow_Text
+			{
+				rect		-2,3,44,22        // relative to the box: starts 9 down
+				text		"Repeating \nCrossbow"
+				textalign	1
+				textscale	0.13
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Musket
+		{
+			rect		58,60,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Musket_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Musket"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Marskman
+		{
+			rect		58,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Marksman_Text
+			{
+				rect		-2,7,40,14        // relative to the box: starts 9 down
+				text		"Marksman"
+				textalign	1
+				textscale	0.14
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Pilum
+		{
+			rect		110,60,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Pilum_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Pilum"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Flintlock
+		{
+			rect		110,100,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Flintlock_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Flintlock Pistol"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Hdr_Litheness
+		{
+			rect 0,186,160,30
+			text "Litheness"
+			textAlign 1
+			textScale 0.4
+			forecolor 1,1,1,1
+			font "font/chain"
+
+		}
+		windowDef Line_Litheness
+		{
+			rect 0,224,160,1
+			backcolor 1,1,1,1
+		}
+		windowDef Skill_Dexterity
+		{
+			rect		22,238,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Dexterity_Text
+			{
+				rect		-2,7,40,14        // relative to the box: starts 9 down
+				text		"Dexterity"
+				textalign	1
+				textscale	0.14
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Nimble
+		{
+			rect		22,278,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Nimble_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Nimble"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Evade
+		{
+			rect		94,238,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Evade_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Evade"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+		windowDef Skill_Swift
+		{
+			rect		94,278,44,28
+			backcolor	0.15,0.15,0.15,1
+			bordersize	1
+			bordercolor	1,1,1,1
+
+			windowDef Skill_Swift_Text
+			{
+				rect		-1,7,40,14        // relative to the box: starts 9 down
+				text		"Swift"
+				textalign	1
+				textscale	0.15
+				forecolor	1,1,1,1
+				font "font/chain"
+			}
+		}
+	}
+
+	windowDef CloseButton
+	{
+		rect 270,435,100,30
+		backcolor 0.2, 0.2, 0.2, 1
+		borderSize 1
+		borderColor 1,1,1,1
+		text "Close"
+		textAlign 1
+		textScale 0.3
+		forecolor 1,1,1,1
+		font "fonts/chain"
+
+		onMouseEnter {
+			set "CloseButton::backcolor" "0.5, 0.5 ,0.5, 1";
+		}
+		onMouseExit {
+			set "CloseButton::backcolor" "0.2, 0.2, 0.2, 1";
+		}
+		onActionRelease {
+			set "cmd" "closeSkillTree";
+		}
+	}	
+}
+
+
+

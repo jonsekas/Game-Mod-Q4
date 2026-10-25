@@ -1117,6 +1117,8 @@ idPlayer::idPlayer() {
 	hud						= NULL;
 	mphud					= NULL;
 	objectiveSystem			= NULL;
+	skillTreeGui			= NULL;
+	skillTreeOpen			= false;
 	objectiveSystemOpen		= false;
 	showNewObjectives		= false;
 #ifdef _XENON
@@ -1860,6 +1862,7 @@ void idPlayer::Spawn( void ) {
 		overlayHud = NULL;
 		overlayHudTime = 0;
 		
+		skillTreeGui	= NULL;
 		objectiveSystem = NULL;
 
 		if ( spawnArgs.GetString( "hud", "", temp ) ) {
@@ -1898,11 +1901,15 @@ void idPlayer::Spawn( void ) {
 
 		if ( !gameLocal.isMultiplayer ) {
 			objectiveSystem = uiManager->FindGui( spawnArgs.GetString( "wristcomm", "guis/wristcomm.gui" ), true, false, true );
+			gameLocal.Printf("skilltree gui %s\n", skillTreeGui ? "loaded" : "MISSING");
+			skillTreeGui = uiManager->FindGui("guis/skilltree.gui", true, false, true );
 			objectiveSystemOpen = false;
 #ifdef _XENON
 			g_ObjectiveSystemOpen = objectiveSystemOpen;
 #endif
 		}
+
+
 
 		// clear votes
 		// if we want to display current votes that were started before a player was connected
@@ -2137,6 +2144,7 @@ void idPlayer::Save( idSaveGame *savefile ) const {
  	savefile->WriteUserInterface( hud, false );
 //	savefile->WriteUserInterface( mphud, false );			// Don't save MP stuff
  	savefile->WriteUserInterface( objectiveSystem, false );
+	savefile->WriteUserInterface( skillTreeGui, false );
 	savefile->WriteUserInterface( cinematicHud, false );
 	savefile->WriteBool( objectiveSystemOpen );
 	savefile->WriteBool( disableHud );
@@ -2410,6 +2418,7 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
  	savefile->ReadUserInterface( hud, &spawnArgs );	
 	assert( !mphud );									// Don't save MP stuff
 	savefile->ReadUserInterface( objectiveSystem, &spawnArgs );
+	savefile->ReadUserInterface( skillTreeGui, &spawnArgs );
 	savefile->ReadUserInterface( cinematicHud, &spawnArgs );
 	savefile->ReadBool( objectiveSystemOpen );
 
@@ -3683,6 +3692,11 @@ void idPlayer::DrawHUD( idUserInterface *_hud ) {
 	}
 
 	if ( disableHud || influenceActive != INFLUENCE_NONE || privateCameraView || !_hud || !g_showHud.GetBool() ) {
+		return;
+	}
+	if (skillTreeGui && skillTreeOpen) {
+		skillTreeGui->Redraw( gameLocal.time );
+		skillTreeGui->DrawCursor();
 		return;
 	}
 
@@ -6074,6 +6088,9 @@ idUserInterface *idPlayer::ActiveGui( void ) {
 		return 0;
 	}
 #endif
+	if (skillTreeOpen && skillTreeGui) {
+		return skillTreeGui;
+	}
 	return focusUI;
 }
 
@@ -6287,6 +6304,10 @@ void idPlayer::Weapon_GUI( void ) {
 
 	flagCanFire = false;
 
+	if (usercmd.buttons & BUTTON_ATTACK) {
+		gameLocal.Printf("Weapon_GUI: attack held\n");
+	}
+
 	if ( !objectiveSystemOpen ) {
 		if ( idealWeapon != currentWeapon ) {
 			Weapon_Combat();
@@ -6305,10 +6326,13 @@ void idPlayer::Weapon_GUI( void ) {
  		const char *command = NULL;
 		bool updateVisuals = false;
 
+
+
 		idUserInterface *ui = ActiveGui();
 		if ( ui ) {
  			ev = sys->GenerateMouseButtonEvent( 1, ( usercmd.buttons & BUTTON_ATTACK ) != 0 );
 			command = ui->HandleEvent( &ev, gameLocal.time, &updateVisuals );
+			gameLocal.Printf("gui click at %.0f,%.0f -> '%s'\n", ui->CursorX(), ui->CursorY(), command ? command : "(null)");
 			if ( updateVisuals && focusEnt && ui == focusUI ) {
 				focusEnt->UpdateVisuals();
 			}
@@ -6543,6 +6567,12 @@ bool idPlayer::HandleSingleGuiCommand( idEntity *entityGui, idLexer *src ) {
 				health = 100;
 			}
 		}
+		return true;
+	}
+
+	if (token.Icmp( "closeSkillTree" ) == 0) {
+		gameLocal.Printf("close command received\n");
+		CloseSkillTree();
 		return true;
 	}
 
@@ -7798,7 +7828,7 @@ void idPlayer::UpdateViewAngles( void ) {
 	int i;
 	idAngles delta;
 
-	if ( !noclip && ( gameLocal.inCinematic || privateCameraView || gameLocal.GetCamera() || influenceActive == INFLUENCE_LEVEL2 ) ) {
+	if ( !noclip && ( gameLocal.inCinematic || privateCameraView || gameLocal.GetCamera() || skillTreeOpen || influenceActive == INFLUENCE_LEVEL2 ) ) {
 		// no view changes at all, but we still want to update the deltas or else when
 		// we get out of this mode, our view will snap to a kind of random angle
 		UpdateDeltaViewAngles( viewAngles );
@@ -8591,6 +8621,17 @@ void idPlayer::PerformImpulse( int impulse ) {
    		}
 		case IMPULSE_23: {
 			Evade();
+			break;
+		}
+
+		case IMPULSE_24: {
+			skillTreeOpen = !skillTreeOpen;
+			gameLocal.Printf("skill tree requested\n");
+			if ( skillTreeGui ) {
+				skillTreeGui->Activate( skillTreeOpen, gameLocal.time );
+				skillTreeGui->SetCursor( 320, 240 );
+
+			}
 			break;
 		}
 				
