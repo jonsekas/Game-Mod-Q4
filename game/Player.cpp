@@ -1550,7 +1550,7 @@ void idPlayer::Init( void ) {
 	nextPerfectBlockTime	= 0;
 	nextBlockTime			= 0;
 	blockStartTime			= 0;
-
+	ResetSkills();
 	focusTime				= 0;
 	focusUI					= NULL;
 	focusEnt				= NULL;
@@ -2160,6 +2160,7 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 	savefile->WriteInt( nextPerfectBlockTime );
 	savefile->WriteInt( nextBlockTime );
 	savefile->WriteInt( nextEvade );
+	SaveSkills(savefile);
  	savefile->WriteBool( hiddenWeapon );
 
 //	savefile->WriteInt( spectator );						// Don't save MP stuff
@@ -2440,6 +2441,7 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	savefile->ReadInt( nextPerfectBlockTime );
 	savefile->ReadInt( nextBlockTime );
 	savefile->ReadInt( nextEvade );
+	RestoreSkills( savefile );
  	savefile->ReadBool( hiddenWeapon );
 
 	assert( !spectator );								// Don't save MP stuff
@@ -3694,9 +3696,8 @@ void idPlayer::DrawHUD( idUserInterface *_hud ) {
 	if ( disableHud || influenceActive != INFLUENCE_NONE || privateCameraView || !_hud || !g_showHud.GetBool() ) {
 		return;
 	}
-	if (skillTreeGui && skillTreeOpen) {
-		skillTreeGui->Redraw( gameLocal.time );
-		skillTreeGui->DrawCursor();
+	if ( DrawSkillTree() ) 
+	{
 		return;
 	}
 
@@ -6570,9 +6571,7 @@ bool idPlayer::HandleSingleGuiCommand( idEntity *entityGui, idLexer *src ) {
 		return true;
 	}
 
-	if (token.Icmp( "closeSkillTree" ) == 0) {
-		gameLocal.Printf("close command received\n");
-		CloseSkillTree();
+	if ( HandleSkillTreeCommand( token, src) ) {
 		return true;
 	}
 
@@ -8625,13 +8624,7 @@ void idPlayer::PerformImpulse( int impulse ) {
 		}
 
 		case IMPULSE_24: {
-			skillTreeOpen = !skillTreeOpen;
-			gameLocal.Printf("skill tree requested\n");
-			if ( skillTreeGui ) {
-				skillTreeGui->Activate( skillTreeOpen, gameLocal.time );
-				skillTreeGui->SetCursor( 320, 240 );
-
-			}
+			ToggleSkillTree();
 			break;
 		}
 				

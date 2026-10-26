@@ -5,6 +5,7 @@
 
 #ifndef __GAME_PLAYER_H__
 #define __GAME_PLAYER_H__
+#include "SkillTree.h"
 
 /*
 ===============================================================================
@@ -367,6 +368,10 @@ public:
 	int						nextStaminaPulse;   // when stamina will tick down
 	int						nextStaminaRegenTime;
 	int						nextEvade;
+	bool					skillUnlocked[ NUM_SKILLS ];
+	int						xp;
+	int						level;
+	int						skillPoints;
 	bool					hiddenWeapon;		// if the weapon is hidden ( in noWeapons maps )
 
 	// mp stuff
@@ -448,7 +453,22 @@ public:
 	void					Think( void );
 	void					StaminaManager(int amount);
 	void					CloseSkillTree( void );
-
+	void					OpenSkillTree( void );
+	void					ToggleSkillTree( void );
+	void					ResetSkills( void );
+	void					SaveSkills( idSaveGame *savefile ) const;
+	void					RestoreSkills( idRestoreGame *savefile );
+	bool					DrawSkillTree( void );
+	bool					HandleSkillTreeCommand( const idToken& token, idLexer* src );
+	skillId_t				FindSkill(const char* name) const;
+	bool					HasSkill( skillId_t skill ) const;
+	void					UpdateSkillTreeGui( void );
+	int						XpForNextLevel( void ) const;
+	void					GainXP( int amount );
+	bool					HasSkillInCategory( skillCategory_t category ) const;
+	bool					UnlockSkill( skillId_t skill );
+	bool					IsFaithBlocked( skillId_t skill ) const;
+	void					RefundSkills( void );
 	// save games
 	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file

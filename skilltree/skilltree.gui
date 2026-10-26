@@ -16,7 +16,7 @@ windowDef Desktop
 			textAlign 1
 			textScale 0.4
 			forecolor 1,1,1,1
-			font "font/chain"
+			fonts "fonts/chain"
 
 		}
 		windowDef Line_Prowess
@@ -32,31 +32,66 @@ windowDef Desktop
 			bordersize	1
 			bordercolor	1,1,1,1
 
+			onActionRelease {
+				set "cmd" "skillUnlock Parry";
+			}
+
 			windowDef Skill_Parry_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14       
 				text		"Parry"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
 			}
+			windowDef Skill_Parry_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Parry" == 2 )
+			}
+			windowDef Skill_Parry_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Parry" == 0 )
+			}
+
 		}
 		windowDef Skill_Fighter
 		{
-			rect		58,60,40,28
+			rect		58,60,44,28
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
 
+			onActionRelease {
+				set "cmd" "skillUnlock Fighter";
+			}
+
 			windowDef Skill_Fighter_Text
 			{
-				rect		-2,7,40,14        // relative to the box: starts 9 down
+				rect		-2,7,44,14        
 				text		"Fighter"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Fighter_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Fighter" == 2 )
+			}
+			windowDef Skill_Fighter_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Fighter" == 0 )
 			}
 		}
 		windowDef Skill_Block
@@ -66,14 +101,31 @@ windowDef Desktop
 			bordersize	1
 			bordercolor	1,1,1,1
 
+			onActionRelease {
+				set "cmd" "skillUnlock Block"
+			}
+
 			windowDef Skill_Block_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14   
 				text		"Block"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Block_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Block" == 2 )
+			}
+			windowDef Skill_Block_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Block" == 0 )
 			}
 		}
 		windowDef Skill_Riposte
@@ -83,14 +135,31 @@ windowDef Desktop
 			bordersize	1
 			bordercolor	1,1,1,1
 
+			onActionRelease {
+				set "cmd" "skillUnlock Riposte";
+			}
+
 			windowDef Skill_Riposte_Text
 			{
-				rect		-2,7,40,14        // relative to the box: starts 9 down
+				rect		-2,7,40,14        
 				text		"Riposte"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Riposte_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Riposte" == 2 )
+			}
+			windowDef Skill_Riposte_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Riposte" == 0 )
 			}
 		}
 		windowDef Skill_Warrior
@@ -100,14 +169,31 @@ windowDef Desktop
 			bordersize	1
 			bordercolor	1,1,1,1
 
+			onActionRelease {
+				set "cmd" "skillUnlock Warrior";
+			}
+
 			windowDef Skill_Warrior_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14        
 				text		"Warrior"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Warrior_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Warrior" == 2 )
+			}
+			windowDef Skill_Warrior_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Warrior" == 0 )
 			}
 		}
 		windowDef Skill_Sidestep
@@ -117,14 +203,31 @@ windowDef Desktop
 			bordersize	1
 			bordercolor	1,1,1,1
 
+			onActionRelease {
+				set "cmd" "skillUnlock Sidestep";
+			}
+
 			windowDef Skill_Sidestep_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14        
 				text		"Sidestep"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Sidestep_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Sidestep" == 2 )
+			}
+			windowDef Skill_Sidestep_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Sidestep" == 0 )
 			}
 		}
 		windowDef Hdr_Fortitude
@@ -134,7 +237,7 @@ windowDef Desktop
 			textAlign 1
 			textScale 0.4
 			forecolor 1,1,1,1
-			font "font/chain"
+			font "fonts/chain"
 
 		}
 		windowDef Line_Fortitude
@@ -148,15 +251,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Unburdened";
+			}
 
 			windowDef Skill_Unburdened_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14        
 				text		"Unburdened"
 				textalign	1
 				textscale	0.13
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Unburdened_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Unburdened" == 2 )
+			}
+			windowDef Skill_Unburdened_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Unburdened" == 0 )
 			}
 		}
 		windowDef Skill_Outlasting
@@ -166,14 +285,31 @@ windowDef Desktop
 			bordersize	1
 			bordercolor	1,1,1,1
 
+			onActionRelease {
+				set "cmd" "skillUnlock Outlasting";
+			}
+
 			windowDef Skill_Outlasting_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14       
 				text		"Outlasting"
 				textalign	1
 				textscale	0.14
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Outlasting_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Outlasting" == 2 )
+			}
+			windowDef Skill_Outlasting_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Outlasting" == 0 )
 			}
 		}
 		windowDef Skill_Brave
@@ -182,15 +318,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Brave";
+			}
 
 			windowDef Skill_Brave_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14      
 				text		"Brave"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Brave_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Brave" == 2 )
+			}
+			windowDef Skill_Brave_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Brave" == 0 )
 			}
 		}
 		windowDef Skill_Vigor
@@ -199,15 +351,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Vigor";
+			}
 
-			windowDef Skill_Outlasting_Text
+			windowDef Skill_Vigor_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14        
 				text		"Vigor"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Vigor_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Vigor" == 2 )
+			}
+			windowDef Skill_Vigor_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Vigor" == 0 )
 			}
 		}
 	}
@@ -222,7 +390,7 @@ windowDef Desktop
 			textAlign 1
 			textScale 0.4
 			forecolor 1,1,1,1
-			font "font/chain"
+			font "fonts/chain"
 
 		}
 		windowDef Line_Light
@@ -237,15 +405,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Greatsword";
+			}
 
 			windowDef Skill_Greatsword_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14      
 				text		"Greatsword"
 				textalign	1
 				textscale	0.13
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Greatsword_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Greatsword" == 2 )
+			}
+			windowDef Skill_Greatsword_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Greatsword" == 0 )
 			}
 		}
 		windowDef Skill_Spear
@@ -254,15 +438,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Spear";
+			}
 
 			windowDef Skill_Spear_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14       
 				text		"Spear"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Spear_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Spear" == 2 )
+			}
+			windowDef Skill_Spear_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Spear" == 0 )
 			}
 		}
 		windowDef Skill_Paladin
@@ -271,15 +471,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Paladin";
+			}
 
 			windowDef Skill_Paladin_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14   
 				text		"Paladin"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Paladin_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Paladin" == 2 )
+			}
+			windowDef Skill_Paladin_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Paladin" == 0 )
 			}
 		}
 		windowDef Skill_blessedPowder
@@ -288,15 +504,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock blessedPowder";
+			}
 
 			windowDef Skill_blessedPowder_Text
 			{
-				rect		-2,3,44,22       // relative to the box: starts 9 down
+				rect		-2,3,44,22     
 				text		"Blessed \nPowder"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_blessedPowder_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_blessedPowder" == 2 )
+			}
+			windowDef Skill_blessedPowder_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_blessedPowder" == 0 )
 			}
 		}
 		windowDef Skill_theLight
@@ -305,15 +537,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock theLight";
+			}
 
 			windowDef Skill_theLight_Text
 			{
-				rect		-2,3,44,22      // relative to the box: starts 9 down
+				rect		-2,3,44,22      
 				text		"The \nLight"
 				textalign	1
 				textscale	0.14
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_theLight_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_theLight" == 2 )
+			}
+			windowDef Skill_theLight_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_theLight" == 0 )
 			}
 		}
 		windowDef Skill_theManifesto
@@ -322,15 +570,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock theManifesto";
+			}
 
 			windowDef Skill_theManifesto_Text
 			{
-				rect		-2,3,44,22        // relative to the box: starts 9 down
+				rect		-2,3,44,22    
 				text		"The \nManifesto"
 				textalign	1
 				textscale	0.13
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_theManifesto_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_theManifesto" == 2 )
+			}
+			windowDef Skill_theManifesto_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_theManifesto" == 0 )
 			}
 		}
 
@@ -346,7 +610,7 @@ windowDef Desktop
 			textAlign 1
 			textScale 0.4
 			forecolor 1,1,1,1
-			font "font/chain"
+			font "fonts/chain"
 
 		}
 		windowDef Line_Dark	
@@ -361,15 +625,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Longsword";
+			}
 
 			windowDef Skill_Longsword_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14       
 				text		"Longsword"
 				textalign	1
 				textscale	0.13
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Longsword_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Longsword" == 2 )
+			}
+			windowDef Skill_Longsword_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Longsword" == 0 )
 			}
 		}
 		windowDef Skill_Heretic
@@ -378,15 +658,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Heretic";
+			}
 
 			windowDef Skill_Heretic_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14        
 				text		"Heretic"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Heretic_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Heretic" == 2 )
+			}
+			windowDef Skill_Heretic_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Heretic" == 0 )
 			}
 		}
 		windowDef Skill_impossiblySkilled
@@ -395,15 +691,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock impossiblySkilled";
+			}
 
 			windowDef Skill_impossiblySkilled_Text
 			{
-				rect		-2,3,44,22        // relative to the box: starts 9 down
+				rect		-2,3,44,22       
 				text		"Impossibly \nSkilled"
 				textalign	1
 				textscale	0.13
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_impossiblySkilled_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_impossiblySkilled" == 2 )
+			}
+			windowDef Skill_impossiblySkilled_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_impossiblySkilled" == 0 )
 			}
 		}
 		windowDef Skill_dualDaggers
@@ -412,15 +724,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock dualDaggers";
+			}
 
 			windowDef Skill_dualDaggers_Text
 			{
-				rect		-2,3,44,22       // relative to the box: starts 9 down
+				rect		-2,3,44,22      
 				text		"Dual \nDaggers"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_dualDaggers_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_dualDaggers" == 2 )
+			}
+			windowDef Skill_dualDaggers_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_dualDaggers" == 0 )
 			}
 		}
 		windowDef Skill_Encore
@@ -429,15 +757,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Encore";
+			}
 
 			windowDef Skill_Encore_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14       
 				text		"Encore"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Encore_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Encore" == 2 )
+			}
+			windowDef Skill_Encore_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Encore" == 0 )
 			}
 		}
 		windowDef Skill_dualSwords
@@ -446,15 +790,31 @@ windowDef Desktop
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock dualSwords";
+			}
 
 			windowDef Skill_dualSwords_Text
 			{
-				rect		-2,3,44,22       // relative to the box: starts 9 down
+				rect		-2,3,44,22      
 				text		"Dual \nSwords"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				fonts "fonts/chain"
+			}
+			windowDef Skill_dualSwords_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_dualSwords" == 2 )
+			}
+			windowDef Skill_dualSwords_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_dualSwords" == 0 )
 			}
 		}
 	}
@@ -469,7 +829,7 @@ windowDef Col_Ingenuity
 			textAlign 1
 			textScale 0.4
 			forecolor 1,1,1,1
-			font "font/chain"
+			font "fonts/chain"
 
 		}
 		windowDef Line_Ingenuity
@@ -484,15 +844,31 @@ windowDef Col_Ingenuity
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Crossbow";
+			}
 
 			windowDef Skill_Crossbow_Text
 			{
-				rect		-2,7,40,14        // relative to the box: starts 9 down
+				rect		-2,7,44,14      
 				text		"Crossbow"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Crossbow_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Crossbow" == 2 )
+			}
+			windowDef Skill_Crossbow_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Crossbow" == 0 )
 			}
 		}
 		windowDef Skill_repeatingCrossbow
@@ -501,15 +877,31 @@ windowDef Col_Ingenuity
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock repeatingCrossbow";
+			}
 
 			windowDef Skill_repeatingCrossbow_Text
 			{
-				rect		-2,3,44,22        // relative to the box: starts 9 down
+				rect		-2,3,44,22        
 				text		"Repeating \nCrossbow"
 				textalign	1
 				textscale	0.13
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_repeatingCrossbow_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_repeatingCrossbow" == 2 )
+			}
+			windowDef Skill_repeatingCrossbow_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_repeatingCrossbow" == 0 )
 			}
 		}
 		windowDef Skill_Musket
@@ -518,32 +910,64 @@ windowDef Col_Ingenuity
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Musket";
+			}
 
 			windowDef Skill_Musket_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14        
 				text		"Musket"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Musket_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Musket" == 2 )
+			}
+			windowDef Skill_Musket_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Musket" == 0 )
 			}
 		}
-		windowDef Skill_Marskman
+		windowDef Skill_Marksman
 		{
 			rect		58,100,44,28
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Marksman";
+			}
 
 			windowDef Skill_Marksman_Text
 			{
-				rect		-2,7,40,14        // relative to the box: starts 9 down
+				rect		-2,7,44,14       
 				text		"Marksman"
 				textalign	1
 				textscale	0.14
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Marksman_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Marksman" == 2 )
+			}
+			windowDef Skill_Marksman_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Marksman" == 0 )
 			}
 		}
 		windowDef Skill_Pilum
@@ -552,15 +976,31 @@ windowDef Col_Ingenuity
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Pilum";
+			}
 
 			windowDef Skill_Pilum_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14        
 				text		"Pilum"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Pilum_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Pilum" == 2 )
+			}
+			windowDef Skill_Pilum_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Pilum" == 0 )
 			}
 		}
 		windowDef Skill_Flintlock
@@ -569,15 +1009,31 @@ windowDef Col_Ingenuity
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Flintlock";
+			}
 
 			windowDef Skill_Flintlock_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14       
 				text		"Flintlock Pistol"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Flintlock_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Flintlock" == 2 )
+			}
+			windowDef Skill_Flintlock_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Flintlock" == 0 )
 			}
 		}
 		windowDef Hdr_Litheness
@@ -601,15 +1057,31 @@ windowDef Col_Ingenuity
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Dexterity";
+			}
 
 			windowDef Skill_Dexterity_Text
 			{
-				rect		-2,7,40,14        // relative to the box: starts 9 down
+				rect		-2,7,44,14       
 				text		"Dexterity"
 				textalign	1
 				textscale	0.14
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Dexterity_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Dexterity" == 2 )
+			}
+			windowDef Skill_Dexterity_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Dexterity" == 0 )
 			}
 		}
 		windowDef Skill_Nimble
@@ -618,15 +1090,31 @@ windowDef Col_Ingenuity
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Nimble";
+			}
 
 			windowDef Skill_Nimble_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14      
 				text		"Nimble"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Nimble_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Nimble" == 2 )
+			}
+			windowDef Skill_Nimble_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Nimble" == 0 )
 			}
 		}
 		windowDef Skill_Evade
@@ -635,15 +1123,31 @@ windowDef Col_Ingenuity
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Evade";
+			}
 
 			windowDef Skill_Evade_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14      
 				text		"Evade"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Evade_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Evade" == 2 )
+			}
+			windowDef Skill_Evade_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Evade" == 0 )
 			}
 		}
 		windowDef Skill_Swift
@@ -652,20 +1156,114 @@ windowDef Col_Ingenuity
 			backcolor	0.15,0.15,0.15,1
 			bordersize	1
 			bordercolor	1,1,1,1
+			onActionRelease {
+				set "cmd" "skillUnlock Swift";
+			}
 
 			windowDef Skill_Swift_Text
 			{
-				rect		-1,7,40,14        // relative to the box: starts 9 down
+				rect		-1,7,44,14    
 				text		"Swift"
 				textalign	1
 				textscale	0.15
 				forecolor	1,1,1,1
-				font "font/chain"
+				font "fonts/chain"
+			}
+			windowDef Skill_Swift_Owned
+			{
+				rect 0,0,44,28
+				bordersize 2
+				bordercolor 1,0.8,0.2,1
+				visible ( "gui::skill_Swift" == 2 )
+			}
+			windowDef Skill_Swift_Locked
+			{
+				rect 0,0,44,28
+				backcolor 0,0,0,0.6
+				visible ( "gui::skill_Swift" == 0 )
 			}
 		}
 	}
 
+	windowDef Info_PointsLabel
+	{
+		rect		20,440,60,20
+		text		"Points:"
+		textscale	0.25
+		forecolor	1,1,1,1
+		font		"fonts/chain"
+	}
+	windowDef Info_Points
+	{
+		rect		80,440,40,20
+		text		"gui::skillPoints"
+		textscale	0.25
+		forecolor	1,0.8,0.2,1    
+		font		"fonts/chain"
+	}
+
+	windowDef Info_LevelLabel
+	{
+		rect		130,440,60,20
+		text		"Level:"
+		textscale	0.25
+		forecolor	1,1,1,1
+		font		"fonts/chain"
+	}
+	windowDef Info_Level
+	{
+		rect		180,440,40,20
+		text		"gui::level"
+		textscale	0.25
+		forecolor	1,0.8,0.2,1    
+		font		"fonts/chain"
+	}
+	windowDef Info_XPBack                          
+	{
+		rect		20,415,220,14
+		backcolor	0.1,0.1,0.1,1
+		bordersize	1
+		bordercolor	1,1,1,0.6
+	}
+	windowDef Info_XPFill                          
+	{
+		rect		20,415,( "gui::xpPct" * 220 ),14
+		backcolor	1,0.8,0.2,0.8               
+	}
+	windowDef Info_XPText                          
+	{
+		rect		20,415,220,14
+		text		"gui::xpText"
+		textalign	1
+		textscale	0.2
+		forecolor	1,1,1,1
+		font		"fonts/chain"
+	}
+
 	windowDef CloseButton
+	{
+		rect 400,435,100,30
+		backcolor 0.2, 0.2, 0.2, 1
+		borderSize 1
+		borderColor 1,1,1,1
+		text "Reset Skills"
+		textAlign 1
+		textScale 0.3
+		forecolor 1,1,1,1
+		font "fonts/chain"
+
+		onMouseEnter {
+			set "CloseButton::backcolor" "0.5, 0.5 ,0.5, 1";
+		}
+		onMouseExit {
+			set "CloseButton::backcolor" "0.2, 0.2, 0.2, 1";
+		}
+		onActionRelease {
+			set "cmd" "resetSkillTree";
+		}
+	}	
+
+	windowDef ResetSkills
 	{
 		rect 270,435,100,30
 		backcolor 0.2, 0.2, 0.2, 1
