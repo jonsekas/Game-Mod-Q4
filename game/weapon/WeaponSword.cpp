@@ -233,6 +233,7 @@ rvWeaponSword::Attack
 ================
 */
 void rvWeaponSword::Attack(void) {
+		float bonus = owner->ConsumeAttackBonus();
 	trace_t		tr;
 	idEntity* ent;
 
@@ -314,7 +315,9 @@ void rvWeaponSword::Attack(void) {
 			if (ent->fl.takedamage) {
 				float dmgScale = 1.0f;
 				dmgScale *= owner->PowerUpModifier(PMOD_MELEE_DAMAGE);
-				ent->Damage(owner, owner, playerViewAxis[0], spawnArgs.GetString("def_damage"), dmgScale, 0);
+				dmgScale *= bonus;
+				gameLocal.Printf("hit x%.1f\n", dmgScale);
+				ent->Damage(owner, owner, playerViewAxis[0], spawnArgs.GetString("def_damage"), dmgScale, CLIPMODEL_ID_TO_JOINT_HANDLE( tr.c.id ));
 				StartSound("snd_hit", SND_CHANNEL_ANY, 0, false, NULL);
 				if (ent->spawnArgs.GetBool("bleed")) {
 					PlayLoopSound(LOOP_FLESH);
@@ -585,7 +588,7 @@ stateResult_t rvWeaponSword::State_Block(const stateParms_t& parms) {
 		return SRESULT_WAIT;
 	case STAGE_END:
 		owner->pfl.isBlocking = false;
-		owner->nextBlockTime = gameLocal.time + blockCooldown;
+		owner->nextBlockTime = gameLocal.time + owner->GetGuardCooldown( blockCooldown );
 		PostState("Idle", parms.blendFrames);
 		return SRESULT_DONE;
 	}

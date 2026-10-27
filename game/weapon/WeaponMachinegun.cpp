@@ -200,7 +200,7 @@ stateResult_t rvWeaponMachinegun::State_Idle( const stateParms_t& parms ) {
 					SetState ( "Fire", 0 );
 					return SRESULT_DONE;
 				}  
-				if ( wsfl.attack && AutoReload() && !AmmoInClip ( ) && AmmoAvailable () ) {
+				if ( wsfl.attack && !fireHeld && AutoReload() && !AmmoInClip ( ) && AmmoAvailable () ) {
 					SetState ( "Reload", 4 );
 					return SRESULT_DONE;			
 				}
@@ -273,17 +273,26 @@ stateResult_t rvWeaponMachinegun::State_Reload ( const stateParms_t& parms ) {
 			}
 			
 			SetStatus ( WP_RELOAD );
+			StartReloadTimer();
 			PlayAnim ( ANIMCHANNEL_ALL, "reload", parms.blendFrames );
 			return SRESULT_STAGE ( STAGE_WAIT );
 			
 		case STAGE_WAIT:
-			if ( AnimDone ( ANIMCHANNEL_ALL, 4 ) ) {
-				AddToClip ( ClipSize() );
-				SetState ( "Idle", 4 );
+			if ( wsfl.lowerWeapon ) {
+				StopReloadTimer();
+				SetState ( "Lower", 4 );
 				return SRESULT_DONE;
 			}
-			if ( wsfl.lowerWeapon ) {
-				SetState ( "Lower", 4 );
+			if ( ReloadCancelRequested() ) {
+				StopReloadTimer();
+				fireHeld = true;
+				SetState( "Idle", 4 );
+				return SRESULT_DONE;
+			}
+			if ( ReloadTimerDone() ) {
+				AddToClip( ClipSize() );
+				StopReloadTimer();
+				SetState( "Idle", 4 );
 				return SRESULT_DONE;
 			}
 			return SRESULT_WAIT;

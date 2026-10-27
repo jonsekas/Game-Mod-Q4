@@ -2561,6 +2561,34 @@ windowDef Desktop
 		}
 	}
 
+	windowDef ReloadBar
+	{
+		rect		220,300,200,30
+		visible		( "gui::reloadActive" == 1 )
+
+		windowDef ReloadBack
+		{
+			rect		0,0,200,10
+			backcolor	0,0,0,0.6
+			bordersize	1
+			bordercolor	1,1,1,0.6
+		}
+		windowDef ReloadFill
+		{
+			rect		0,0,( "gui::reloadPct" * 200 ),10
+			backcolor	1,0.8,0.2,0.8
+		}
+		windowDef ReloadText
+		{
+			rect		0,12,200,14
+			text		"Reloading click to cancel"
+			textalign	1
+			textscale	0.2
+			forecolor	1,1,1,1
+			font		"fonts/chain"
+		}
+	}
+
 //-------------------------
 
 }

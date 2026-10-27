@@ -22,10 +22,13 @@ bool idPlayer::TryBlock( idEntity* attacker) {
 	int					elapsed;
 	elapsed = gameLocal.time - blockStartTime;
 
-	if ( elapsed <= weapon->perfectBlockWindow && gameLocal.time >= nextPerfectBlockTime ) {
-		inventory.stamina += weapon->perfectBlockGain;
+	if ( elapsed <= weapon->perfectBlockWindow && gameLocal.time >= nextPerfectBlockTime && CanPerfectBlock() ) {
+		inventory.stamina += GetPerfectBlockGain();
 		inventory.stamina = idMath::ClampInt(0, inventory.maxstamina, inventory.stamina);
 		nextPerfectBlockTime = gameLocal.time + weapon->perfectBlockCooldown;
+		if (HasSkill(SKILL_SIDESTEP)) {
+			pfl.skipBlockCooldown = true;
+		}
 	}
 	else {
 		StaminaManager( weapon->blockCost );

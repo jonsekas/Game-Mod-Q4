@@ -13,6 +13,9 @@ entityDef weapon_sword
 	"perfectBlockGain"			"10"
 	"perfectBlockCooldown"		"2"
 	"blockCooldown"				"2"
+	"parryWindow"			"0.5"
+	"parryCooldown"			"1.5"
+	"parryCost"				"30"
 }
 
 entityDef damage_sword

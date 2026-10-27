@@ -20,7 +20,6 @@ idPlayer:: StaminaSys
 ==============	
 */
 void idPlayer::StaminaSys(void) {
-
 	bool running = !physicsObj.OnLadder() && (usercmd.buttons & BUTTON_RUN) && (usercmd.forwardmove || usercmd.rightmove) && (usercmd.upmove >= 0);
 
 	if (physicsObj.HasJumped()) {
@@ -35,7 +34,7 @@ void idPlayer::StaminaSys(void) {
 	if (gameLocal.time >= nextStaminaPulse) {
 		if (running && inventory.stamina > 0) {
 			StaminaManager(1);
-			nextStaminaPulse = gameLocal.time + STAMINA_DRAIN;
+			nextStaminaPulse = gameLocal.time + (int)( STAMINA_DRAIN / GetSprintDrainScale() );
 		}
 		else if (inventory.stamina < inventory.maxstamina && gameLocal.time >= nextStaminaRegenTime ) {
 			inventory.stamina++;
@@ -44,7 +43,6 @@ void idPlayer::StaminaSys(void) {
 	}
 
 	inventory.stamina = idMath::ClampInt(0, inventory.maxstamina, inventory.stamina);
-
 }
 
 /*
@@ -54,10 +52,14 @@ idPlayer:: Evade
 */
 
 void idPlayer::Evade(void) {
+	int cost = EVADE_STAMINA_COST - GetEvadeCostReduction();
+	if ( !CanEvade() ) {
+		return;
+	}
 	if (usercmd.forwardmove == 0 && usercmd.rightmove == 0) {
 		return;
 	}
-	if (gameLocal.time < nextEvade || inventory.stamina < EVADE_STAMINA_COST) {
+	if (gameLocal.time < nextEvade || inventory.stamina < cost ) {
 		return;
 	}
 	gameLocal.Printf("forward: %d  right: %d\n", usercmd.forwardmove, usercmd.rightmove);
@@ -76,7 +78,7 @@ void idPlayer::Evade(void) {
 	vel += dir * EVADE_SPEED;
 	vel.z += EVADE_HOP;
 	physicsObj.SetLinearVelocity(vel);
-	StaminaManager(EVADE_STAMINA_COST);
+	StaminaManager( cost );
 	nextEvade = gameLocal.time + EVADE_COOLDOWN;
 }
 

@@ -1276,10 +1276,10 @@ windowDef Col_Ingenuity
 		font "fonts/chain"
 
 		onMouseEnter {
-			set "CloseButton::backcolor" "0.5, 0.5 ,0.5, 1";
+			set "ResetSkillsButton::backcolor" "0.5, 0.5 ,0.5, 1";
 		}
 		onMouseExit {
-			set "CloseButton::backcolor" "0.2, 0.2, 0.2, 1";
+			set "ResetSkillsButton::backcolor" "0.2, 0.2, 0.2, 1";
 		}
 		onActionRelease {
 			set "cmd" "closeSkillTree";

@@ -177,12 +177,18 @@ public:
 	void				BeginAttack					( void );
 	void				EndAttack					( void );
 	bool				IsReady						( void ) const;
+	void				StartReloadTimer(void);
+	void				StopReloadTimer(void);
 	bool				IsReloading					( void ) const;
+	bool				ReloadTimerDone				( void ) const;
+	float				GetReloadProgress			( void ) const;
+	bool				ReloadCancelRequested		( void );
+	bool				IsReloadTimerRunning		( void ) const;
 	bool				IsHolstered					( void ) const;
 	bool				ShowCrosshair				( void ) const;
 	bool				CanDrop						( void ) const;
 	bool				CanZoom						( void ) const;
-	void				CancelReload				( void );
+	void				CancelReload				( void );				
 	void				SetStatus					( weaponStatus_t status );
 	bool				AutoReload					( void );
 	bool				IsHidden					( void ) const;
@@ -339,6 +345,14 @@ public:
 	int								perfectBlockGain;
 	int								perfectBlockCooldown;
 	int								blockCooldown;
+	int								parryCost;
+	int								parryWindow;
+	int								parryCooldown;
+	int								reloadTime;
+	int								reloadDuration;
+	int								reloadStartTime;
+	int								reloadEndTime;
+	bool							reloadCancelArmed;
 	float							spread;
 	int								nextAttackTime;
 

@@ -67,4 +67,35 @@ typedef struct {
 	skillCategory_t category;
 } skillDef_t;
 
+class idPlayerSkills 
+{
+	public:
+		void Reset(void);
+		void Save(idSaveGame* savefile) const;
+		void Restore(idRestoreGame* savefile);
+
+		bool Has(skillId_t skill) const;
+		bool HasInCategory(skillCategory_t category) const;
+		bool IsFaithBlocked(skillId_t skill) const;
+		skillId_t Find(const char* name) const;
+		int GetState(skillId_t skill) const;
+		const char* GetName(skillId_t skill) const;
+		int XpForNextLevel(void) const;
+
+		int GetXP(void) const;
+		int GetLevel(void) const;
+		int GetPoints(void) const;
+
+		bool Unlock(skillId_t skill);
+		int Refund(void);
+		int GainXP(int amount);
+
+	private:
+		bool unlocked[NUM_SKILLS];
+		int xp;
+		int level;
+		int points;
+
+};
+
 #endif

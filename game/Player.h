@@ -336,6 +336,8 @@ public:
 		bool		objectiveFailed	:1;
 		bool		noFallingDamage :1;
 		bool		isBlocking		:1;
+		bool		sideStepDiscount :1;
+		bool		skipBlockCooldown :1;
 	} pfl;
 		
 	// inventory
@@ -368,10 +370,11 @@ public:
 	int						nextStaminaPulse;   // when stamina will tick down
 	int						nextStaminaRegenTime;
 	int						nextEvade;
-	bool					skillUnlocked[ NUM_SKILLS ];
-	int						xp;
-	int						level;
-	int						skillPoints;
+	int						parryEndTime;
+	int						nextParryTime;
+	int						parryRefund;
+	float					attackBonus;
+	idPlayerSkills			skills;
 	bool					hiddenWeapon;		// if the weapon is hidden ( in noWeapons maps )
 
 	// mp stuff
@@ -455,20 +458,28 @@ public:
 	void					CloseSkillTree( void );
 	void					OpenSkillTree( void );
 	void					ToggleSkillTree( void );
-	void					ResetSkills( void );
-	void					SaveSkills( idSaveGame *savefile ) const;
-	void					RestoreSkills( idRestoreGame *savefile );
 	bool					DrawSkillTree( void );
 	bool					HandleSkillTreeCommand( const idToken& token, idLexer* src );
-	skillId_t				FindSkill(const char* name) const;
 	bool					HasSkill( skillId_t skill ) const;
 	void					UpdateSkillTreeGui( void );
-	int						XpForNextLevel( void ) const;
 	void					GainXP( int amount );
-	bool					HasSkillInCategory( skillCategory_t category ) const;
 	bool					UnlockSkill( skillId_t skill );
-	bool					IsFaithBlocked( skillId_t skill ) const;
+	int						GetStaminaBonus( void ) const;
 	void					RefundSkills( void );
+	void					ApplySkillEffects( void );
+	bool					CanPerfectBlock( void ) const;
+	int						GetPerfectBlockGain( void ) const;
+	int						GetParryWindow(void) const;
+	void					StartParry( void );
+	int						GetGuardCooldown( int baseCooldown );
+	bool					TryParry( idEntity* attacker );
+	float					ConsumeAttackBonus( void );
+	int						GetHealthBonus( void ) const;
+	float					GetMoveSpeedScale( void ) const;
+	int						GetEvadeCostReduction( void ) const;
+	float					GetSprintDrainScale( void ) const;
+	bool					CanEvade( void ) const;
+	float					GetReloadTimeScale( void ) const;
 	// save games
 	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
