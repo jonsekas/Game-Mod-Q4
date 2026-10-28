@@ -1,0 +1,40 @@
+entityDef weapon_crossbow
+{
+	"inherit"						"weapon_machinegun"
+	"inv_weapon"					"weapon_crossbow"
+	"weaponname"					"Crossbow"
+
+	"def_projectile"				"projectile_arrow"     
+	"ammoType"						"ammo_nailgun"
+	"ammoRequired"					"1"
+	"inv_start_ammo_machinegun"		"0"                    
+	"inv_start_ammo_nailgun"		"10"                  
+	"def_altprojectile"				"projectile_arrow"
+
+	"clipSize"						"1"
+	"reloadTime"					"2.5"
+	"fireRate"						"1.0"
+	"spread"						"0" 
+	"isThrowable"					"1"
+}
+
+entityDef projectile_arrow
+{
+	"inherit"				"projectile_nail"
+	"def_damage"			"damage_arrow"
+	"def_splash_damage"		""               
+	"speed"					"2500"
+	"gravity"				"1"           
+	"fuse"					"0"
+	"detonate_on_fuse"		"0"
+	"detonate_on_world"		"0"              
+	"detonate_on_bounce"	"0"
+	"bounce"				"0"
+	"remove_time"			"30000"          
+}
+
+entityDef damage_arrow
+{
+	"inherit"				"damage_nailDirect"
+	"damage"				"80"
+}

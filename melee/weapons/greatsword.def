@@ -1,0 +1,26 @@
+entityDef weapon_greatsword
+{
+	"inherit"					"weapon_gauntlet"
+	"inv_weapon"				"weapon_greatsword"
+	"weaponname"				"Greatsword"
+	"weaponclass"				"rvWeaponSword"
+	"range"						"250"
+	"single_swing"				"1"
+	"def_damage"				"damage_greatsword"
+	"swingCost"					"35"
+	"swingDelay"				"5"
+	"blockCost"					"10"
+	"perfectBlockWindow"		"1"
+	"perfectBlockGain"			"10"
+	"perfectBlockCooldown"		"2"
+	"blockCooldown"				"2"
+	"parryWindow"			"0.25"
+	"parryCooldown"			"1.5"
+	"parryCost"				"30"
+}
+
+entityDef damage_greatsword
+{
+	"inherit"					"weapon_gauntlet"
+	"damage"					"130"
+}	

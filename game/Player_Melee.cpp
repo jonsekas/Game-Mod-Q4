@@ -2,10 +2,17 @@
 #pragma hdrstop
 
 #include "Game_local.h"
+#include "Projectile.h"
 
 
-bool idPlayer::TryBlock( idEntity* attacker) {
+bool idPlayer::TryBlock( idEntity* inflictor, idEntity* attacker) {
 
+	if (pfl.hitByBullet && !CanBlockBullets() ) {
+		return false;
+	}
+	if (inflictor && inflictor->IsType(idProjectile::GetClassType())) {
+		return false;
+	}
 
 	if ( !pfl.isBlocking ) {
 		return false;
@@ -18,24 +25,27 @@ bool idPlayer::TryBlock( idEntity* attacker) {
 	}
 	if (inventory.stamina < weapon->blockCost) {	
 		return false;
-	}
-	int					elapsed;
+	} 
+	int elapsed;
 	elapsed = gameLocal.time - blockStartTime;
 
-	if ( elapsed <= weapon->perfectBlockWindow && gameLocal.time >= nextPerfectBlockTime && CanPerfectBlock() ) {
-		inventory.stamina += GetPerfectBlockGain();
-		inventory.stamina = idMath::ClampInt(0, inventory.maxstamina, inventory.stamina);
-		nextPerfectBlockTime = gameLocal.time + weapon->perfectBlockCooldown;
-		if (HasSkill(SKILL_SIDESTEP)) {
-			pfl.skipBlockCooldown = true;
-		}
-	}
-	else {
+	if (elapsed <= weapon->perfectBlockWindow && gameLocal.time >= nextPerfectBlockTime && CanPerfectBlock()) {
+		RewardPerfectBlock();
+	} else {
 		StaminaManager( weapon->blockCost );
 	}
 	return true;
 
 
+}
+
+void idPlayer::RewardPerfectBlock( void ) {
+	inventory.stamina += GetPerfectBlockGain();
+	inventory.stamina = idMath::ClampInt(0, inventory.maxstamina, inventory.stamina);
+	nextPerfectBlockTime = gameLocal.time + weapon->perfectBlockCooldown;
+	if (HasSkill(SKILL_SIDESTEP)) {
+		pfl.skipBlockCooldown = true;
+	}
 }
 
 // 	// MCG: player doesn't take friendly fire damage, except from self!

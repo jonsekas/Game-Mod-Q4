@@ -517,7 +517,7 @@ stateResult_t rvWeaponSword::State_Fire(const stateParms_t& parms) {
 	case STAGE_START:
 		if (single_swing == true) {
 			Attack();
-			nextSwingTime = gameLocal.time + swingDelay;
+			nextSwingTime = gameLocal.time + (int)( swingDelay * owner->GetSwingScale() );
 			owner->StaminaManager(swingCost);
 			waitForRelease = true;
 			return SRESULT_STAGE(STAGE_END);

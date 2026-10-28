@@ -720,6 +720,14 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 		return true;
 	}
 
+	if (ent->IsType(idPlayer::GetClassType())) {
+		idPlayer* player = static_cast<idPlayer*>(ent);
+		if (player->TryReflect()) {
+			Reflect(player);
+			return false;
+		}
+	}
+
  	// just get rid of the projectile when it hits a player in noclip
  	if ( ent->IsType( idPlayer::GetClassType() ) && static_cast<idPlayer *>( ent )->noclip ) {
    		PostEventMS( &EV_Remove, 0 );
@@ -2031,6 +2039,24 @@ void rvSpawnerProjectile::Event_PostSpawn ( void ) {
 	}
 }
 
+void idProjectile::Reflect(idEntity* newOwner) {
+	idVec3 velocity = physicsObj.GetLinearVelocity();
+
+	float speed = velocity.Length();
+
+	idVec3 dir = -velocity;
+
+	idEntity* shooter = owner.GetEntity();
+	if (shooter) {
+		dir = shooter->GetPhysics()->GetAbsBounds().GetCenter() - physicsObj.GetOrigin();
+	}
+	dir.Normalize();
+
+	owner = newOwner;
+	physicsObj.GetClipModel()->SetOwner(owner);
+	physicsObj.SetLinearVelocity(speed * dir);
+	physicsObj.SetAxis( dir.ToMat3() );
+}
 
 /*
 ===============================================================================

@@ -634,6 +634,9 @@ void rvWeapon::Spawn ( void ) {
 	parryWindow = SEC2MS(spawnArgs.GetFloat("parryWindow"));
 	parryCooldown = SEC2MS(spawnArgs.GetFloat("parryCooldown"));
 	reloadTime = SEC2MS(spawnArgs.GetFloat("reloadTime"));
+	isFirearm = spawnArgs.GetBool("isFirearm", "0");
+	isThrowable = spawnArgs.GetBool("isThrowable", "0");
+	isDual = spawnArgs.GetBool("isDual", "0");
 	parryCost = spawnArgs.GetInt("parryCost", "0");
 	perfectBlockGain = spawnArgs.GetInt("perfectBlockGain");
 	perfectBlockCooldown = SEC2MS(spawnArgs.GetFloat("perfectBlockCooldown"));
@@ -1349,6 +1352,9 @@ void rvWeapon::Save ( idSaveGame *savefile ) const {
 	savefile->WriteInt		( parryCooldown );
 	savefile->WriteInt		( parryCost );
 	savefile->WriteInt		( reloadTime );
+	savefile->WriteBool		( isFirearm );
+	savefile->WriteBool		( isThrowable );
+	savefile->WriteBool		( isDual );
 	// savefile->WriteInt	( nextAttackTime ); // cnicholson: This is set to 0 in restore, so don't save it
 
 	// cnicholson: These 3 idDicts are setup during restore, no need to save them.
@@ -1490,6 +1496,10 @@ void rvWeapon::Restore ( idRestoreGame *savefile ) {
 	savefile->ReadInt		( parryCooldown );
 	savefile->ReadInt		( parryCost );
 	savefile->ReadInt		( reloadTime );
+	savefile->ReadBool		( isFirearm );
+	savefile->ReadBool		( isThrowable );
+	savefile->ReadBool		( isDual );
+
 	nextAttackTime = 0;
 	reloadStartTime = 0;
 	reloadEndTime = 0;
@@ -2654,8 +2664,13 @@ void rvWeapon::LaunchProjectiles ( idDict& dict, const idVec3& muzzleOrigin, con
 	idVec3			dir;
 	idBounds		ownerBounds;
 
+
 	if ( gameLocal.isClient ) {
 		return;
+	}
+
+	if (isThrowable && owner) {
+		power *= owner->GetThrowableDamageScale();
 	}
 	
 	// Let the AI know about the new attack
@@ -2812,6 +2827,11 @@ void rvWeapon::Hitscan( const idDict& dict, const idVec3& muzzleOrigin, const id
 		msg.WriteFloat( fxOrigin[2] );
 	}
 
+	float damageScale = 1.0f;
+	if ( isFirearm && owner ) {
+		spread *= owner->GetFireArmSpreadScale();
+		damageScale = owner->GetFireArmDamageScale();	
+	}
 	float spreadRad = DEG2RAD( spread );
 	idVec3 end;
 	for( i = 0; i < num_hitscans; i++ ) {
@@ -2857,7 +2877,7 @@ void rvWeapon::Hitscan( const idDict& dict, const idVec3& muzzleOrigin, const id
 		}
 		dir.Normalize();
 
-		gameLocal.HitScan( dict, muzzleOrigin, dir, fxOrigin, owner, false, 1.0f, NULL, areas );
+		gameLocal.HitScan( dict, muzzleOrigin, dir, fxOrigin, owner, false, damageScale, NULL, areas );
 
 		if ( gameLocal.isServer ) {
 			msg.WriteDir( dir, 24 );

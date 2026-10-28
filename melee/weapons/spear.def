@@ -1,0 +1,26 @@
+entityDef weapon_spear
+{
+	"inherit"					"weapon_gauntlet"
+	"inv_weapon"				"weapon_spear"
+	"weaponname"				"Spear"
+	"weaponclass"				"rvWeaponSword"
+	"range"						"300"
+	"single_swing"				"1"
+	"def_damage"				"damage_spear"
+	"swingCost"					"35"
+	"swingDelay"				"5"
+	"blockCost"					"10"
+	"perfectBlockWindow"		"1"
+	"perfectBlockGain"			"10"
+	"perfectBlockCooldown"		"2"
+	"blockCooldown"				"2"
+	"parryWindow"			"0.25"
+	"parryCooldown"			"1.5"
+	"parryCost"				"30"
+}
+
+entityDef damage_spear
+{
+	"inherit"					"weapon_gauntlet"
+	"damage"					"75"
+}	

@@ -1,0 +1,39 @@
+entityDef weapon_repeatingcrossbow
+{
+	"inherit"						"weapon_crossbow"
+	"inv_weapon"					"weapon_repeatingcrossbow"
+	"weaponname"					"Repeating Crossbow"
+
+	"def_projectile"				"projectile_repeatingarrow"     
+	"ammoType"						"ammo_nailgun"
+	"ammoRequired"					"1"
+	"inv_start_ammo_machinegun"		"0"                    
+	"inv_start_ammo_nailgun"		"10"                  
+	"def_altprojectile"				"projectile_repeatingarrow"  
+	"clipSize"						"3"
+	"reloadTime"					"5"
+	"fireRate"						"0.5"
+	"isThrowable"					"1"
+	"spread"						"0"                   
+}
+
+entityDef projectile_repeatingarrow
+{
+	"inherit"				"projectile_nail"
+	"def_damage"			"damage_repeatarrow"
+	"def_splash_damage"		""               
+	"speed"					"2500"
+	"gravity"				"1.1"             
+	"fuse"					"0"
+	"detonate_on_fuse"		"0"
+	"detonate_on_world"		"0"             
+	"detonate_on_bounce"	"0"
+	"bounce"				"0"
+	"remove_time"			"30000"         
+}
+
+entityDef damage_repeatarrow
+{
+	"inherit"				"damage_nailDirect"
+	"damage"				"50"
+}

@@ -65,6 +65,7 @@ typedef struct {
 	const char* name;
 	skillId_t prerequisite;
 	skillCategory_t category;
+	const char* weapon;	
 } skillDef_t;
 
 class idPlayerSkills 
@@ -89,6 +90,7 @@ class idPlayerSkills
 		bool Unlock(skillId_t skill);
 		int Refund(void);
 		int GainXP(int amount);
+		const char* GetWeapon(skillId_t skill) const;
 
 	private:
 		bool unlocked[NUM_SKILLS];

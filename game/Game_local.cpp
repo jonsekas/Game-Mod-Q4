@@ -7727,7 +7727,15 @@ idEntity* idGameLocal::HitScan(
 							statManager->WeaponHit( (idActor*)owner, ent, ((idPlayer*)owner)->GetCurrentWeapon() );
 						}
 						// RAVEN END
+						idPlayer* hitPlayer = NULL;
+						if ( ent->IsType(idPlayer::GetClassType() ) ) {
+							hitPlayer = static_cast<idPlayer*>( ent );
+							hitPlayer->pfl.hitByBullet = true;
+						}
 						ent->Damage( owner, owner, dir, damage, damageScale, hitJoint );
+						if ( hitPlayer ) {
+							hitPlayer->pfl.hitByBullet = false;
+						}
 					}
 
 					// Let the entity add its own damage effect

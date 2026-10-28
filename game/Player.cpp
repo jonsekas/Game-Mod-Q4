@@ -1550,7 +1550,11 @@ void idPlayer::Init( void ) {
 	nextPerfectBlockTime	= 0;
 	nextBlockTime			= 0;
 	blockStartTime			= 0;
-	ResetSkills();
+	parryEndTime			= 0;
+	nextParryTime			= 0;
+	parryRefund				= 0;
+	attackBonus				= 1.0f;
+	skills.Reset();
 	focusTime				= 0;
 	focusUI					= NULL;
 	focusEnt				= NULL;
@@ -2160,7 +2164,11 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 	savefile->WriteInt( nextPerfectBlockTime );
 	savefile->WriteInt( nextBlockTime );
 	savefile->WriteInt( nextEvade );
-	SaveSkills(savefile);
+	savefile->WriteInt(	parryEndTime );
+	savefile->WriteInt( nextParryTime );
+	savefile->WriteInt( parryRefund );
+	savefile->WriteFloat( attackBonus );
+	skills.Save( savefile );
  	savefile->WriteBool( hiddenWeapon );
 
 //	savefile->WriteInt( spectator );						// Don't save MP stuff
@@ -2441,7 +2449,11 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	savefile->ReadInt( nextPerfectBlockTime );
 	savefile->ReadInt( nextBlockTime );
 	savefile->ReadInt( nextEvade );
-	RestoreSkills( savefile );
+	savefile->ReadInt( parryEndTime );
+	savefile->ReadInt( nextParryTime );
+	savefile->ReadInt( parryRefund );
+	savefile->ReadFloat( attackBonus );
+	skills.Restore( savefile );
  	savefile->ReadBool( hiddenWeapon );
 
 	assert( !spectator );								// Don't save MP stuff
@@ -3421,6 +3433,8 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 	} 
 
 	_hud->SetStateBool( "player_ammo_empty", ( ammoamount == 0 ) );
+	_hud->SetStateBool("reloadActive", weapon->IsReloadTimerRunning());
+	_hud->SetStateFloat("reloadPct", weapon->GetReloadProgress());
 }
 
 /*
@@ -4158,15 +4172,17 @@ bool idPlayer::Give( const char *statname, const char *value, bool dropped ) {
  			}
 		}
 		nextHealthPulse = gameLocal.time + HEALTH_PULSE;
-	} else if ( !idStr::Icmp( statname, "armor" ) ) {
-		if ( inventory.armor >= boundaryArmor ) {
+	} else if (!idStr::Icmp(statname, "xp")) {
+		GainXP(atoi(value));
+	} else if (!idStr::Icmp(statname, "armor")) {
+		if (inventory.armor >= boundaryArmor) {
 			return false;
 		}
-		amount = atoi( value );
+		amount = atoi(value);
 
 		inventory.armor += amount;
-		if ( inventory.armor > boundaryArmor ) {
-			 inventory.armor = boundaryArmor;
+		if (inventory.armor > boundaryArmor) {
+			inventory.armor = boundaryArmor;
 		}
 		nextArmorPulse = gameLocal.time + ARMOR_PULSE;
 	} else if ( !idStr::Icmp( statname, "air" ) ) {
@@ -8627,6 +8643,10 @@ void idPlayer::PerformImpulse( int impulse ) {
 			ToggleSkillTree();
 			break;
 		}
+		case IMPULSE_25: {
+			StartParry();
+			break;
+		}
 				
 		case IMPULSE_28: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
@@ -8830,6 +8850,7 @@ void idPlayer::AdjustSpeed( void ) {
 	}
 
 	speed *= PowerUpModifier(PMOD_SPEED);
+	speed *= GetMoveSpeedScale();
 
 	if ( influenceActive == INFLUENCE_LEVEL3 ) {
 		speed *= 0.33f;
@@ -10195,8 +10216,10 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 			return;
 		}
 	}
-
-	if (TryBlock(attacker)) {
+	if (TryParry(inflictor, attacker) ) {
+		return;
+	}
+	if (TryBlock(inflictor, attacker) ) {
 		return;
 	}
 

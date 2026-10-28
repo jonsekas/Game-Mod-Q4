@@ -1,0 +1,28 @@
+entityDef weapon_musket
+{
+	"inherit"			"weapon_machinegun"
+	"inv_weapon"		"weapon_musket"
+	"weaponname"		"Musket"
+	"def_hitscan"		"hitscan_musket"
+	"def_althitscan"	"hitscan_musket"
+	"clipSize"			"1"
+	"reloadTime"		"5"
+	"fireRate"			"1.0"
+	"spread"			"0.5" 
+	"inv_start_ammo_machinegun"		"15"
+	"isFirearm"			"1"
+}
+
+entityDef hitscan_musket
+{
+	"inherit"			"hitscan_bullet"
+	"def_damage"		"damage_musket"
+	"def_damage_flesh"	"damage_musket"
+}
+
+entityDef damage_musket
+{
+	"inherit"			"damage_machinegun"
+	"damage"			"150"
+	"damage_flesh"		"150"
+}

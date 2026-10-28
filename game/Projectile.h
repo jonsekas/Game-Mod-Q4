@@ -35,6 +35,7 @@ public :
 
 //RITUAL BEGIN
 	void					SetOwner(idEntity* ent)	{ owner = ent;	}
+	void					Reflect( idEntity* newOwner );
 // RITUAL END
 
 	idEntity *				GetOwner( void ) const;
