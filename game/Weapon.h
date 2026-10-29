@@ -177,8 +177,10 @@ public:
 	void				BeginAttack					( void );
 	void				EndAttack					( void );
 	bool				IsReady						( void ) const;
-	void				StartReloadTimer(void);
-	void				StopReloadTimer(void);
+	void				StartReloadTimer			(void);
+	void				StopReloadTimer				(void);
+	void				StartSwingMotion			(void);
+	void				SwingMotion					(idVec3 &origin, idMat3 &axis);
 	bool				IsReloading					( void ) const;
 	bool				ReloadTimerDone				( void ) const;
 	float				GetReloadProgress			( void ) const;
@@ -353,6 +355,10 @@ public:
 	int								reloadStartTime;
 	int								reloadEndTime;
 	bool							reloadCancelArmed;
+	idAngles						swingAngles;
+	idVec3							swingOffset;
+	int								swingTime;
+	int								swingStartTime;
 	float							spread;
 	int								nextAttackTime;
 

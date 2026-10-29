@@ -1118,7 +1118,9 @@ idPlayer::idPlayer() {
 	mphud					= NULL;
 	objectiveSystem			= NULL;
 	skillTreeGui			= NULL;
+	helpGui					= NULL;
 	skillTreeOpen			= false;
+	helpOpen				= false;
 	objectiveSystemOpen		= false;
 	showNewObjectives		= false;
 #ifdef _XENON
@@ -1863,6 +1865,7 @@ void idPlayer::Spawn( void ) {
 		overlayHudTime = 0;
 		
 		skillTreeGui	= NULL;
+		helpGui			= NULL;
 		objectiveSystem = NULL;
 
 		if ( spawnArgs.GetString( "hud", "", temp ) ) {
@@ -1903,6 +1906,7 @@ void idPlayer::Spawn( void ) {
 			objectiveSystem = uiManager->FindGui( spawnArgs.GetString( "wristcomm", "guis/wristcomm.gui" ), true, false, true );
 			gameLocal.Printf("skilltree gui %s\n", skillTreeGui ? "loaded" : "MISSING");
 			skillTreeGui = uiManager->FindGui("guis/skilltree.gui", true, false, true );
+			helpGui = uiManager->FindGui("guis/help.gui", true, false, true);
 			objectiveSystemOpen = false;
 #ifdef _XENON
 			g_ObjectiveSystemOpen = objectiveSystemOpen;
@@ -2000,7 +2004,7 @@ void idPlayer::Spawn( void ) {
 		}
 // RAVEN BEGIN
 // mekberg: set to blaster now and disable the weapon.
-		idealWeapon = SlotForWeapon ( "weapon_blaster" ); 
+		idealWeapon = SlotForWeapon ( "weapon_sword" ); 
 		Event_DisableWeapon( );
 // RAVEN END
 	} else {
@@ -2145,6 +2149,7 @@ void idPlayer::Save( idSaveGame *savefile ) const {
 //	savefile->WriteUserInterface( mphud, false );			// Don't save MP stuff
  	savefile->WriteUserInterface( objectiveSystem, false );
 	savefile->WriteUserInterface( skillTreeGui, false );
+	savefile->WriteUserInterface( helpGui, false);
 	savefile->WriteUserInterface( cinematicHud, false );
 	savefile->WriteBool( objectiveSystemOpen );
 	savefile->WriteBool( disableHud );
@@ -2420,6 +2425,7 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	assert( !mphud );									// Don't save MP stuff
 	savefile->ReadUserInterface( objectiveSystem, &spawnArgs );
 	savefile->ReadUserInterface( skillTreeGui, &spawnArgs );
+	savefile->ReadUserInterface( helpGui, &spawnArgs);
 	savefile->ReadUserInterface( cinematicHud, &spawnArgs );
 	savefile->ReadBool( objectiveSystemOpen );
 
@@ -3698,6 +3704,9 @@ void idPlayer::DrawHUD( idUserInterface *_hud ) {
 	}
 	if ( DrawSkillTree() ) 
 	{
+		return;
+	}
+	if ( DrawHelp() ) {
 		return;
 	}
 
@@ -6092,6 +6101,9 @@ idUserInterface *idPlayer::ActiveGui( void ) {
 	if (skillTreeOpen && skillTreeGui) {
 		return skillTreeGui;
 	}
+	if (helpOpen && helpGui) {
+		return helpGui;
+	}
 	return focusUI;
 }
 
@@ -6248,7 +6260,7 @@ void idPlayer::Weapon_NPC( void ) {
 				talkingNPC = focusAI;
 			}
 		}
-	} else if ( currentWeapon == SlotForWeapon ( "weapon_blaster" ) ) {
+	} else if ( currentWeapon == SlotForWeapon ( "weapon_sword" ) ) {
 		Weapon_Combat();
 	}
 }
@@ -7827,7 +7839,7 @@ void idPlayer::UpdateViewAngles( void ) {
 	int i;
 	idAngles delta;
 
-	if ( !noclip && ( gameLocal.inCinematic || privateCameraView || gameLocal.GetCamera() || skillTreeOpen || influenceActive == INFLUENCE_LEVEL2 ) ) {
+	if ( !noclip && ( gameLocal.inCinematic || privateCameraView || gameLocal.GetCamera() || skillTreeOpen || helpOpen || influenceActive == INFLUENCE_LEVEL2 ) ) {
 		// no view changes at all, but we still want to update the deltas or else when
 		// we get out of this mode, our view will snap to a kind of random angle
 		UpdateDeltaViewAngles( viewAngles );
@@ -8627,6 +8639,17 @@ void idPlayer::PerformImpulse( int impulse ) {
 			ToggleSkillTree();
 			break;
 		}
+<<<<<<< Updated upstream
+=======
+		case IMPULSE_25: {
+			StartParry();
+			break;
+		}
+		case IMPULSE_26: {
+			ToggleHelp();
+			break;
+		}
+>>>>>>> Stashed changes
 				
 		case IMPULSE_28: {
  			if ( gameLocal.isClient || entityNumber == gameLocal.localClientNum ) {
