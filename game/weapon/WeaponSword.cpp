@@ -14,6 +14,7 @@ public:
 
 	virtual void		Spawn(void);
 	virtual void		CleanupWeapon(void);
+	virtual void		Think(void);
 	void				Save(idSaveGame* savefile) const;
 	void				Restore(idRestoreGame* savefile);
 	void				PreSave(void);
@@ -33,6 +34,8 @@ protected:
 	int					swingCost;
 	int					nextSwingTime;
 	int					swingDelay;
+	idEntityPtr<idAnimatedEntity> offhandModel;
+	idVec3				offhandOffset;
 	int					blockDelay;
 
 	rvClientEffectPtr	impactEffect;
@@ -42,6 +45,7 @@ protected:
 	void				Block(void);
 	void				StartBlade(void);
 	void				StopBlade(void);
+	void				RemoveOffhand(void);
 
 private:
 
@@ -89,6 +93,7 @@ rvWeaponSword::~rvWeaponSword(void)
 		impactEffect = NULL;
 	}
 	impactMaterial = -1;
+	RemoveOffhand();
 
 }
 /*
@@ -118,8 +123,52 @@ void rvWeaponSword::Spawn(void) {
 	impactEffect = NULL;
 	loopSound = LOOP_NONE;
 	waitForRelease = false;
+
+	offhandOffset = spawnArgs.GetVector("offhandOffset", "0 12 0");
+	offhandModel = NULL;
+
+	if (isDual) {
+		idDict args;
+		args.Set("classname", "player_animatedentity");
+
+		idEntity* ent = NULL;
+		gameLocal.SpawnEntityDef(args, &ent);
+
+		if (ent) {
+			idAnimatedEntity* model = static_cast<idAnimatedEntity*>(ent);
+			model->SetModel( spawnArgs.GetString("model_view") );
+			model->GetAnimator()->CycleAnim(ANIMCHANNEL_ALL, model->GetAnimator()->GetAnim("idle"), gameLocal.time, 0);
+			offhandModel = model;
+		}
+	}
 }
 
+void rvWeaponSword::Think(void)
+{
+	rvWeapon::Think();
+
+	idAnimatedEntity* offhand = offhandModel.GetEntity();
+	if ( !offhand) {
+		return;
+	}
+	offhand->SetOrigin( viewModelOrigin + offhandOffset * viewModelAxis );
+	offhand->SetAxis( viewModelAxis );
+
+	renderEntity_t* re = offhand->GetRenderEntity();
+	re->allowSurfaceInViewID = owner->entityNumber + 1;
+	re->weaponDepthHackInViewID = owner->entityNumber + 1;
+
+	offhand->UpdateVisuals();
+}
+
+void rvWeaponSword::RemoveOffhand(void)
+{
+	idAnimatedEntity* offhand = offhandModel.GetEntity();
+	if (offhand) {
+		offhand->PostEventMS(&EV_Remove, 0);
+	}
+	offhandModel = NULL;
+}
 /*
 ================
 rvWeaponSword::Save
@@ -225,6 +274,7 @@ void rvWeaponSword::CleanupWeapon(void) {
 	}
 	impactMaterial = -1;
 	PlayLoopSound(LOOP_NONE);
+	RemoveOffhand();
 }
 
 /*
@@ -343,11 +393,11 @@ rvWeaponSword::StartBlade
 ================
 */
 void rvWeaponSword::StartBlade(void) {
-	if (viewModel) {
+	if (viewModel && bladeJoint != INVALID_JOINT ) {
 		viewModel->GetAnimator()->SetJointAngularVelocity(bladeJoint, bladeSpinFast, gameLocal.time, bladeAccel);
 	}
 
-	if (GetWorldModel()) {
+	if (GetWorldModel() && bladeJoint_world != INVALID_JOINT) {
 		GetWorldModel()->GetAnimator()->SetJointAngularVelocity(bladeJoint_world, bladeSpinFast, gameLocal.time, bladeAccel);
 	}
 
@@ -362,11 +412,11 @@ rvWeaponSword::StopBlade
 ================
 */
 void rvWeaponSword::StopBlade(void) {
-	if (viewModel) {
+	if (viewModel && bladeJoint != INVALID_JOINT ) {
 		viewModel->GetAnimator()->SetJointAngularVelocity(bladeJoint, bladeSpinSlow, gameLocal.time, bladeAccel);
 	}
 
-	if (GetWorldModel()) {
+	if (GetWorldModel() && bladeJoint_world != INVALID_JOINT ) {
 		GetWorldModel()->GetAnimator()->SetJointAngularVelocity(bladeJoint_world, bladeSpinSlow, gameLocal.time, bladeAccel);
 	}
 
@@ -517,6 +567,7 @@ stateResult_t rvWeaponSword::State_Fire(const stateParms_t& parms) {
 	case STAGE_START:
 		if (single_swing == true) {
 			Attack();
+			StartSwingMotion();
 			nextSwingTime = gameLocal.time + (int)( swingDelay * owner->GetSwingScale() );
 			owner->StaminaManager(swingCost);
 			waitForRelease = true;

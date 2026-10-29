@@ -637,6 +637,9 @@ void rvWeapon::Spawn ( void ) {
 	isFirearm = spawnArgs.GetBool("isFirearm", "0");
 	isThrowable = spawnArgs.GetBool("isThrowable", "0");
 	isDual = spawnArgs.GetBool("isDual", "0");
+	swingAngles = spawnArgs.GetAngles( "swingAngles", "0 0 0" );
+	swingOffset = spawnArgs.GetVector("swingOffset", "0 0 0");
+	swingTime = SEC2MS(spawnArgs.GetFloat("swingTime"));
 	parryCost = spawnArgs.GetInt("parryCost", "0");
 	perfectBlockGain = spawnArgs.GetInt("perfectBlockGain");
 	perfectBlockCooldown = SEC2MS(spawnArgs.GetFloat("perfectBlockCooldown"));
@@ -645,6 +648,7 @@ void rvWeapon::Spawn ( void ) {
 	reloadStartTime = 0;
 	reloadEndTime = 0;
 	reloadDuration = 0;
+	swingStartTime = 0;
 	reloadCancelArmed = false;
 
 	// Zoom
@@ -1030,6 +1034,7 @@ void rvWeapon::Think ( void ) {
 
 	// kick up based on repeat firing
 	MuzzleRise( viewModelOrigin, viewModelAxis );
+	SwingMotion( viewModelOrigin, viewModelAxis );
 
 	if ( viewModel ) {
 		// set the physics position and orientation
@@ -1355,6 +1360,9 @@ void rvWeapon::Save ( idSaveGame *savefile ) const {
 	savefile->WriteBool		( isFirearm );
 	savefile->WriteBool		( isThrowable );
 	savefile->WriteBool		( isDual );
+	savefile->WriteAngles	( swingAngles );
+	savefile->WriteVec3		( swingOffset );
+	savefile->WriteInt		( swingTime );
 	// savefile->WriteInt	( nextAttackTime ); // cnicholson: This is set to 0 in restore, so don't save it
 
 	// cnicholson: These 3 idDicts are setup during restore, no need to save them.
@@ -1499,11 +1507,16 @@ void rvWeapon::Restore ( idRestoreGame *savefile ) {
 	savefile->ReadBool		( isFirearm );
 	savefile->ReadBool		( isThrowable );
 	savefile->ReadBool		( isDual );
+	savefile->ReadAngles	( swingAngles );
+	savefile->ReadVec3		( swingOffset );
+	savefile->ReadInt		( swingTime );
+
 
 	nextAttackTime = 0;
 	reloadStartTime = 0;
 	reloadEndTime = 0;
 	reloadDuration = 0;
+	swingStartTime = 0;
 	reloadCancelArmed = false;
 
 	// Attack Alt Def

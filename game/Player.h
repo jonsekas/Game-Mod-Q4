@@ -356,7 +356,9 @@ public:
 	idUserInterface *		objectiveSystem;
 	idUserInterface *		cinematicHud;
 	idUserInterface *		skillTreeGui;
+	idUserInterface *		helpGui;
 	bool					skillTreeOpen;
+	bool					helpOpen;
 	bool					objectiveSystemOpen;
 	bool					objectiveButtonReleased;
 	bool					disableHud;
@@ -460,6 +462,10 @@ public:
 	void					OpenSkillTree( void );
 	void					ToggleSkillTree( void );
 	bool					DrawSkillTree( void );
+	void					OpenHelp( void );
+	void					CloseHelp( void );
+	void					ToggleHelp( void );
+	bool					DrawHelp( void );
 	bool					HandleSkillTreeCommand( const idToken& token, idLexer* src );
 	bool					HasSkill( skillId_t skill ) const;
 	void					UpdateSkillTreeGui( void );
