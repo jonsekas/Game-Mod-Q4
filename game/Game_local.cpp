@@ -7728,8 +7728,17 @@ idEntity* idGameLocal::HitScan(
 						}
 						// RAVEN END
 						idPlayer* hitPlayer = NULL;
-						if ( ent->IsType(idPlayer::GetClassType() ) ) {
-							hitPlayer = static_cast<idPlayer*>( ent );
+						if (ent->IsType(idPlayer::GetClassType())) {
+							hitPlayer = static_cast<idPlayer*>(ent);
+
+							if (owner != hitPlayer && hitPlayer->TryReflect()) {
+								idVec3 from = hitPlayer->GetEyePosition();
+								idVec3 back = owner->GetPhysics()->GetAbsBounds().GetCenter() - from;
+								back.Normalize();
+								HitScan(hitscanDict, from, back, from, hitPlayer , false, damageScale, NULL, NULL);
+								return hitPlayer;
+							}
+
 							hitPlayer->pfl.hitByBullet = true;
 						}
 						ent->Damage( owner, owner, dir, damage, damageScale, hitJoint );
