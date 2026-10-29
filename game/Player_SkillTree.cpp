@@ -3,8 +3,10 @@
 
 #include "Game_local.h"
 
+static const float PALADIN_XP_BONUS = 0.1f;
+static const float HERETIC_XP_BONUS = 0.05f;
 
-void idPlayer::OpenSkillTree(void)
+void idPlayer::OpenSkillTree( void )
 {
 	skillTreeOpen = true;
 	UpdateSkillTreeGui();
@@ -16,7 +18,7 @@ void idPlayer::OpenSkillTree(void)
 	}
 }
 
-void idPlayer::CloseSkillTree(void)
+void idPlayer::CloseSkillTree( void )
 {
 	skillTreeOpen = false;
 	if (skillTreeGui) {
@@ -25,7 +27,7 @@ void idPlayer::CloseSkillTree(void)
 
 }
 
-void idPlayer::ToggleSkillTree(void)
+void idPlayer::ToggleSkillTree( void )
 {
 	if (skillTreeOpen) {
 		CloseSkillTree();
@@ -34,7 +36,7 @@ void idPlayer::ToggleSkillTree(void)
 	}
 }
 
-bool idPlayer::DrawSkillTree(void)
+bool idPlayer::DrawSkillTree( void )
 {
 	if (skillTreeGui && skillTreeOpen) {
 		skillTreeGui->Redraw(gameLocal.time);
@@ -68,7 +70,7 @@ bool idPlayer::HandleSkillTreeCommand( const idToken &token, idLexer*src )
 
 }
 
-void idPlayer::UpdateSkillTreeGui(void) 
+void idPlayer::UpdateSkillTreeGui( void ) 
 {
 	if (!skillTreeGui) {
 		return;
@@ -88,35 +90,65 @@ void idPlayer::UpdateSkillTreeGui(void)
 	skillTreeGui->StateChanged(gameLocal.time);
 }
 
-bool idPlayer::UnlockSkill(skillId_t skill) 
+bool idPlayer::UnlockSkill( skillId_t skill ) 
 {
 	if (!skills.Unlock(skill)) {
 		return false;
+	}
+	const char* weapon = skills.GetWeapon(skill);
+	if (weapon != NULL) {
+		GiveItem(weapon);
 	}
 	ApplySkillEffects();
 	UpdateSkillTreeGui();
 	return true;
 }
 
-void idPlayer::RefundSkills(void)
+void idPlayer::RefundSkills( void )
 {
+	for (int i = 0; i < NUM_SKILLS; i++) {
+		skillId_t skill = (skillId_t)i;
+		const char* weapon = skills.GetWeapon( skill );
+		if ( HasSkill(skill)&& weapon != NULL ) {
+			int slot = SlotForWeapon(weapon);
+			if (slot >= 0) {
+				inventory.weapons &= ~(1 << slot);
+				if ( currentWeapon == slot || idealWeapon == slot ) {
+					NextBestWeapon();
+				}
+			}
+		}	
+	}
 	skills.Refund();
 	ApplySkillEffects();
 	UpdateSkillTreeGui();
 }
 
-void idPlayer::GainXP(int amount)
+void idPlayer::GainXP( int amount )
 {
-	skills.GainXP( amount );
+	int scaled = (int)( amount * GetXpScale() + 0.5f );
+	skills.GainXP( scaled );
 	UpdateSkillTreeGui();	
 }
 
-bool idPlayer::HasSkill(skillId_t skill) const
+float idPlayer::GetXpScale(void) const
+{
+	float xpScale = 1.0f;
+	if ( HasSkill( SKILL_PALADIN ) ) {
+		xpScale += PALADIN_XP_BONUS;
+	}
+	if ( HasSkill( SKILL_HERETIC ) ) {
+		xpScale += HERETIC_XP_BONUS;
+	}
+	return xpScale;
+}
+
+bool idPlayer::HasSkill( skillId_t skill ) const
 {
 	return skills.Has( skill );
 }
 
-void idPlayer::ApplySkillEffects(void)
+void idPlayer::ApplySkillEffects( void )
 {
 	inventory.maxstamina = MAX_STAMINA + GetStaminaBonus();
 	if (inventory.stamina > inventory.maxstamina) {
@@ -127,3 +159,4 @@ void idPlayer::ApplySkillEffects(void)
 		health = inventory.maxHealth;
 	}
 }
+

@@ -351,6 +351,9 @@ public:
 	int								parryWindow;
 	int								parryCooldown;
 	int								reloadTime;
+	bool							isFirearm;
+	bool							isThrowable;
+	bool							isDual;
 	int								reloadDuration;
 	int								reloadStartTime;
 	int								reloadEndTime;

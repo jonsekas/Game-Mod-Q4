@@ -7727,24 +7727,15 @@ idEntity* idGameLocal::HitScan(
 							statManager->WeaponHit( (idActor*)owner, ent, ((idPlayer*)owner)->GetCurrentWeapon() );
 						}
 						// RAVEN END
-<<<<<<< Updated upstream
-=======
 						idPlayer* hitPlayer = NULL;
-						if (ent->IsType(idPlayer::GetClassType())) {
-							hitPlayer = static_cast<idPlayer*>(ent);
-
-							if (owner != hitPlayer && hitPlayer->TryReflect()) {
-								idVec3 from = hitPlayer->GetEyePosition();
-								idVec3 back = owner->GetPhysics()->GetAbsBounds().GetCenter() - from;
-								back.Normalize();
-								HitScan(hitscanDict, from, back, from, hitPlayer , false, damageScale, NULL, NULL);
-								return hitPlayer;
-							}
-
+						if ( ent->IsType(idPlayer::GetClassType() ) ) {
+							hitPlayer = static_cast<idPlayer*>( ent );
 							hitPlayer->pfl.hitByBullet = true;
 						}
->>>>>>> Stashed changes
 						ent->Damage( owner, owner, dir, damage, damageScale, hitJoint );
+						if ( hitPlayer ) {
+							hitPlayer->pfl.hitByBullet = false;
+						}
 					}
 
 					// Let the entity add its own damage effect

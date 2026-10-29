@@ -1,0 +1,27 @@
+entityDef weapon_dualswords
+{
+	"inherit"					"weapon_gauntlet"
+	"inv_weapon"				"weapon_dualswords"
+	"weaponname"				"Dual Swords"
+	"weaponclass"				"rvWeaponSword"
+	"range"						"200"
+	"single_swing"				"1"
+	"def_damage"				"damage_dualswords"
+	"swingCost"					"35"
+	"swingDelay"				"2"
+	"isDual"					"1"
+	"blockCost"					"20"
+	"perfectBlockWindow"		"1"
+	"perfectBlockGain"			"20"
+	"perfectBlockCooldown"		"2"
+	"blockCooldown"				"2"
+	"parryWindow"			"0.3"
+	"parryCooldown"			"1"
+	"parryCost"				"30"
+}
+
+entityDef damage_dualswords
+{
+	"inherit"					"weapon_gauntlet"
+	"damage"					"120"
+}	

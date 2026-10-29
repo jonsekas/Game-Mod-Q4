@@ -338,6 +338,7 @@ public:
 		bool		isBlocking		:1;
 		bool		sideStepDiscount :1;
 		bool		skipBlockCooldown :1;
+		bool		hitByBullet		:1;
 	} pfl;
 		
 	// inventory
@@ -478,7 +479,7 @@ public:
 	int						GetParryWindow(void) const;
 	void					StartParry( void );
 	int						GetGuardCooldown( int baseCooldown );
-	bool					TryParry( idEntity* attacker );
+	bool					TryParry( idEntity* inflictor, idEntity* attacker);
 	float					ConsumeAttackBonus( void );
 	int						GetHealthBonus( void ) const;
 	float					GetMoveSpeedScale( void ) const;
@@ -486,6 +487,14 @@ public:
 	float					GetSprintDrainScale( void ) const;
 	bool					CanEvade( void ) const;
 	float					GetReloadTimeScale( void ) const;
+	float					GetFireArmSpreadScale( void ) const;
+	float					GetFireArmDamageScale( void ) const;
+	float					GetThrowableDamageScale( void ) const;
+	float					GetXpScale( void ) const;
+	float					GetSwingScale( void ) const;
+	bool					CanBlockBullets( void ) const;
+	bool					TryReflect( void );
+	void					RewardPerfectBlock( void );
 	// save games
 	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
@@ -1082,7 +1091,7 @@ private:
 	void					AdjustSpeed( void );
 	void					StaminaSys( void );
 	void					Evade(void);
-	bool					TryBlock( idEntity* attacker );
+	bool					TryBlock( idEntity* inflictor, idEntity* attacker);
 	void					AdjustBodyAngles( void );
 	void					Move( void );
 	void					SetSpectateOrigin( void );

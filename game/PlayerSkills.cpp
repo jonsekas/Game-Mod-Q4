@@ -5,38 +5,38 @@
 
 
 static const skillDef_t skillTable[NUM_SKILLS] = {
-	{ "Parry", SKILL_NONE, SKILLCAT_PROWESS },
-	{ "Fighter", SKILL_NONE, SKILLCAT_PROWESS },
-	{ "Block", SKILL_NONE, SKILLCAT_PROWESS },
-	{ "Riposte", SKILL_PARRY, SKILLCAT_PROWESS },
-	{ "Warrior", SKILL_FIGHTER, SKILLCAT_PROWESS },
-	{ "Sidestep", SKILL_BLOCK, SKILLCAT_PROWESS },
-	{ "Unburdened", SKILL_NONE, SKILLCAT_FORTITUDE },
-	{ "Brave", SKILL_NONE, SKILLCAT_FORTITUDE },
-	{ "Outlasting", SKILL_UNBURDENED, SKILLCAT_FORTITUDE },
-	{ "Vigor", SKILL_BRAVE, SKILLCAT_FORTITUDE },
-	{ "Greatsword", SKILL_NONE, SKILLCAT_LIGHT },
-	{ "blessedPowder", SKILL_NONE, SKILLCAT_LIGHT },
-	{ "Spear", SKILL_GREATSWORD, SKILLCAT_LIGHT },
-	{ "theLight", SKILL_BLESSEDPOWDER, SKILLCAT_LIGHT },
-	{ "Paladin", SKILL_SPEAR, SKILLCAT_LIGHT },
-	{ "theManifesto", SKILL_THELIGHT, SKILLCAT_LIGHT },
-	{ "Longsword", SKILL_NONE, SKILLCAT_DARK },
-	{ "dualDaggers", SKILL_NONE, SKILLCAT_DARK },
-	{ "Heretic", SKILL_LONGSWORD, SKILLCAT_DARK },
-	{ "Encore", SKILL_DUALDAGGERS, SKILLCAT_DARK },
-	{ "impossiblySkilled", SKILL_HERETIC, SKILLCAT_DARK },
-	{ "dualSwords", SKILL_ENCORE, SKILLCAT_DARK },
-	{ "Crossbow", SKILL_NONE, SKILLCAT_INGENUITY },
-	{ "Musket", SKILL_NONE, SKILLCAT_INGENUITY },
-	{ "Pilum", SKILL_NONE, SKILLCAT_INGENUITY },
-	{ "repeatingCrossbow", SKILL_CROSSBOW, SKILLCAT_INGENUITY },
-	{ "Marksman", SKILL_MUSKET, SKILLCAT_INGENUITY },
-	{ "Flintlock", SKILL_PILUM, SKILLCAT_INGENUITY },
-	{ "Dexterity", SKILL_NONE, SKILLCAT_LITHENESS },
-	{ "Evade", SKILL_NONE, SKILLCAT_LITHENESS },
-	{ "Nimble", SKILL_DEXTERITY, SKILLCAT_LITHENESS },
-	{ "Swift", SKILL_EVADE, SKILLCAT_LITHENESS },
+	{ "Parry", SKILL_NONE, SKILLCAT_PROWESS, NULL },
+	{ "Fighter", SKILL_NONE, SKILLCAT_PROWESS, NULL },
+	{ "Block", SKILL_NONE, SKILLCAT_PROWESS, NULL },
+	{ "Riposte", SKILL_PARRY, SKILLCAT_PROWESS, NULL },
+	{ "Warrior", SKILL_FIGHTER, SKILLCAT_PROWESS, NULL  },
+	{ "Sidestep", SKILL_BLOCK, SKILLCAT_PROWESS, NULL },
+	{ "Unburdened", SKILL_NONE, SKILLCAT_FORTITUDE, NULL },
+	{ "Brave", SKILL_NONE, SKILLCAT_FORTITUDE, NULL  },
+	{ "Outlasting", SKILL_UNBURDENED, SKILLCAT_FORTITUDE, NULL },
+	{ "Vigor", SKILL_BRAVE, SKILLCAT_FORTITUDE, NULL },
+	{ "Greatsword", SKILL_NONE, SKILLCAT_LIGHT, "weapon_greatsword" },
+	{ "blessedPowder", SKILL_NONE, SKILLCAT_LIGHT, NULL  },
+	{ "Spear", SKILL_GREATSWORD, SKILLCAT_LIGHT, "weapon_spear" },
+	{ "theLight", SKILL_BLESSEDPOWDER, SKILLCAT_LIGHT, NULL  },
+	{ "Paladin", SKILL_SPEAR, SKILLCAT_LIGHT, NULL  },
+	{ "theManifesto", SKILL_THELIGHT, SKILLCAT_LIGHT, NULL  },
+	{ "Longsword", SKILL_NONE, SKILLCAT_DARK, "weapon_longsword" },
+	{ "dualDaggers", SKILL_NONE, SKILLCAT_DARK, "weapon_dualdaggers" },
+	{ "Heretic", SKILL_LONGSWORD, SKILLCAT_DARK, NULL  },
+	{ "Encore", SKILL_DUALDAGGERS, SKILLCAT_DARK, NULL  },
+	{ "impossiblySkilled", SKILL_HERETIC, SKILLCAT_DARK, NULL },
+	{ "dualSwords", SKILL_ENCORE, SKILLCAT_DARK, "weapon_dualswords" },
+	{ "Crossbow", SKILL_NONE, SKILLCAT_INGENUITY, "weapon_crossbow"  },
+	{ "Musket", SKILL_NONE, SKILLCAT_INGENUITY, "weapon_musket" },
+	{ "Pilum", SKILL_NONE, SKILLCAT_INGENUITY, "weapon_pilum"  },
+	{ "repeatingCrossbow", SKILL_CROSSBOW, SKILLCAT_INGENUITY, "weapon_repeatingcrossbow" },
+	{ "Marksman", SKILL_MUSKET, SKILLCAT_INGENUITY, NULL  },
+	{ "Flintlock", SKILL_PILUM, SKILLCAT_INGENUITY, "weapon_flintlock"  },
+	{ "Dexterity", SKILL_NONE, SKILLCAT_LITHENESS, NULL  },
+	{ "Evade", SKILL_NONE, SKILLCAT_LITHENESS, NULL },
+	{ "Nimble", SKILL_DEXTERITY, SKILLCAT_LITHENESS, NULL  },
+	{ "Swift", SKILL_EVADE, SKILLCAT_LITHENESS, NULL },
 };
 
 const int XP_PER_LEVEL = 100;
@@ -205,3 +205,10 @@ int idPlayerSkills::GetPoints(void) const
 	return points; 
 }
 
+const char* idPlayerSkills::GetWeapon(skillId_t skill) const
+{
+	if (skill < 0 || skill >= NUM_SKILLS) {
+		return NULL;
+	}
+	return skillTable[skill].weapon;
+}

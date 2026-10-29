@@ -1,0 +1,35 @@
+entityDef weapon_pilum
+{
+	"inherit"						"weapon_machinegun"
+	"inv_weapon"					"weapon_pilum"
+	"weaponname"					"Pilum"
+
+	"def_projectile"				"projectile_pilum"
+	"def_altprojectile"				"projectile_pilum"     
+
+	"ammoType"						"ammo_rocketlauncher"   
+	"ammoRequired"					"1"
+	"inv_start_ammo_machinegun"		"0"
+	"isThrowable"					"1"
+	"inv_start_ammo_rocketlauncher"	"5"	
+
+	"clipSize"						"1"
+	"reloadTime"					"0.5"
+	"fireRate"						"1.0"
+	"spread"						"0"
+}
+
+entityDef projectile_pilum
+{
+	"inherit"				"projectile_arrow"      
+	"def_damage"			"damage_Pilum"
+	"model"					"models/mapobjects/multiplayer/ctf_base/flag_projector_pole.lwo" 
+	"speed"					"2500"
+	"gravity"				"1.25"
+}
+
+entityDef damage_pilum
+{
+	"inherit"				"damage_nailDirect"
+	"damage"				"100"
+}

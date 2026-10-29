@@ -635,8 +635,8 @@ entityDef player_marine
 	"copy_joint legs_channel"				"legs_channel"
 
 	// weapon slots
-	"def_weapon0"						"weapon_blaster"
-	"weapon0_best"						"1"			// whether weapon should be chosen when out of ammo
+	"def_weapon0"						"weapon_sword"
+	"weapon0_best"						"0"			// whether weapon should be chosen when out of ammo
 	"weapon0_cycle"						"1"			// whether weapon should be selected when using next/prev weapon
 	"weapon0_toggle"					"0"			// whether selecting weapon twice switches between current and previous weapons
 	"weapon0_flashlight"					"1"
@@ -651,35 +651,35 @@ entityDef player_marine
 	"weapon2_cycle"						"1"
 	"weapon2_flashlight"					"0"
 
-	"def_weapon3"						"weapon_hyperblaster"
+	"def_weapon3"						"weapon_hyper"
 	"weapon3_best"						"1"
 	"weapon3_cycle"						"1"
 
-	"def_weapon4"						"weapon_grenadelauncher"
+	"def_weapon4"						"weapon_dualswords"
 	"weapon4_best"						"0"
 	"weapon4_cycle"						"1"
 
-	"def_weapon5"						"weapon_nailgun"
-	"weapon5_best"						"1"
+	"def_weapon5"						"weapon_dualdaggers"
+	"weapon5_best"						"0"
 	"weapon5_cycle"						"1"
 
-	"def_weapon6"						"weapon_rocketlauncher"
+	"def_weapon6"						"weapon_greatsword"
 	"weapon6_best"						"0"
 	"weapon6_cycle"						"1"
 
-	"def_weapon7"						"weapon_railgun"
+	"def_weapon7"						"weapon_spear"
 	"weapon7_best"						"0"
 	"weapon7_cycle"						"1"
 
-	"def_weapon8"						"weapon_lightninggun"
-	"weapon8_best"						"1"
+	"def_weapon8"						"weapon_musket"
+	"weapon8_best"						"0"
 	"weapon8_cycle"						"1"
 
-	"def_weapon9"						"weapon_dmg"
+	"def_weapon9"						"weapon_pilum"
 	"weapon9_best"						"0"
 	"weapon9_cycle"						"1"
 
-	"def_weapon10"						"weapon_napalmgun"
+	"def_weapon10"						"weapon_longsword"
 	"weapon10_best"						"0"
 	"weapon10_cycle"					"1"	
 
@@ -687,9 +687,21 @@ entityDef player_marine
 	"weapon11_best"						"0"
 	"weapon11_cycle"					"1"	
 
-	"def_weapon12"						"weapon_sword"
+	"def_weapon12"						"weapon_longsword"
 	"weapon12_best"						"0"
 	"weapon12_cycle"					"1"	
+
+	"def_weapon13"						"weapon_crossbow"
+	"weapon13_best"						"0"
+	"weapon13_cycle"					"1"
+
+	"def_weapon14"						"weapon_repeatingcrossbow"
+	"weapon14_best"						"0"
+	"weapon14_cycle"					"1"
+
+	"def_weapon15"						"weapon_flintlock"
+	"weapon15_best"						"0"
+	"weapon15_cycle"					"1"
 
 	"mtr_wound"						"textures/decals/hurt02"
 	"mtr_splat"						"textures/decals/dsplat2"

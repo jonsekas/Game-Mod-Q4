@@ -1,0 +1,27 @@
+entityDef weapon_dualdaggers
+{
+	"inherit"					"weapon_gauntlet"
+	"inv_weapon"				"weapon_dualdaggers"
+	"weaponname"				"Dual Daggers"
+	"weaponclass"				"rvWeaponSword"
+	"range"						"100"
+	"single_swing"				"1"
+	"def_damage"				"damage_dualdaggers"
+	"swingCost"					"30"
+	"isDual"					"1"
+	"swingDelay"				"1.5"
+	"blockCost"					"20"
+	"perfectBlockWindow"		"1"
+	"perfectBlockGain"			"20"
+	"perfectBlockCooldown"		"2"
+	"blockCooldown"				"2"
+	"parryWindow"			"0.35"
+	"parryCooldown"			"1"
+	"parryCost"				"30"
+}
+
+entityDef damage_dualdaggers
+{
+	"inherit"					"weapon_gauntlet"
+	"damage"					"105"
+}	

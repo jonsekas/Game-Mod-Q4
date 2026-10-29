@@ -1,0 +1,26 @@
+entityDef weapon_longsword
+{
+	"inherit"					"weapon_gauntlet"
+	"inv_weapon"				"weapon_longsword"
+	"weaponname"				"Sword"
+	"weaponclass"				"rvWeaponSword"
+	"range"						"225"
+	"single_swing"				"1"
+	"def_damage"				"damage_longsword"
+	"swingCost"					"25"
+	"swingDelay"				"3"
+	"blockCost"					"10"
+	"perfectBlockWindow"		"1"
+	"perfectBlockGain"			"10"
+	"perfectBlockCooldown"		"2"
+	"blockCooldown"				"2"
+	"parryWindow"			"0.3"
+	"parryCooldown"			"1.5"
+	"parryCost"				"30"
+}
+
+entityDef damage_longsword
+{
+	"inherit"					"weapon_gauntlet"
+	"damage"					"100"
+}	
